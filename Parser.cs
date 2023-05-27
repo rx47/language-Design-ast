@@ -21,20 +21,11 @@ public class Parser
         }
     }
 
+
     private ASTNode Factor()
     {
-        var token = _currentToken;
-        if (token.Type == TokenType.PLUS)
-        {
-            Eat(TokenType.PLUS);
-            return new UnaryOp(token, Factor());
-        }
-        else if (token.Type == TokenType.MINUS)
-        {
-            Eat(TokenType.MINUS);
-            return new UnaryOp(token, Factor());
-        }
-        else if (token.Type == TokenType.INTEGER)
+        Token token = _currentToken;
+        if (token.Type == TokenType.INTEGER)
         {
             Eat(TokenType.INTEGER);
             return new Num(token);
@@ -42,8 +33,30 @@ public class Parser
         else if (token.Type == TokenType.LPAREN)
         {
             Eat(TokenType.LPAREN);
-            var node = Expr();
+            ASTNode node = Expr();
             Eat(TokenType.RPAREN);
+            return node;
+        }
+        else if (token.Type == TokenType.TRUE)
+        {
+            Eat(TokenType.TRUE);
+            return new BoolNode(token);
+        }
+        else if (token.Type == TokenType.FALSE)
+        {
+            Eat(TokenType.FALSE);
+            return new BoolNode(token);
+        }
+        else if (token.Type == TokenType.MINUS)
+        {
+            Eat(TokenType.MINUS);
+            ASTNode node = new UnaryOp(token, Factor());
+            return node;
+        }
+        else if (token.Type == TokenType.NOT)
+        {
+            Eat(TokenType.NOT);
+            ASTNode node = new UnaryOp(token, Factor());
             return node;
         }
         else
@@ -55,11 +68,11 @@ public class Parser
 
     private ASTNode Term()
     {
-        var node = Factor();
+        ASTNode node = Factor();
 
         while (_currentToken.Type == TokenType.MULTIPLY || _currentToken.Type == TokenType.DIVIDE)
         {
-            var token = _currentToken;
+            Token token = _currentToken;
             if (token.Type == TokenType.MULTIPLY)
             {
                 Eat(TokenType.MULTIPLY);
@@ -75,13 +88,13 @@ public class Parser
         return node;
     }
 
-    public ASTNode Expr()
+    private ASTNode Expr()
     {
-        var node = Term();
+        ASTNode node = Term();
 
         while (_currentToken.Type == TokenType.PLUS || _currentToken.Type == TokenType.MINUS)
         {
-            var token = _currentToken;
+            Token token = _currentToken;
             if (token.Type == TokenType.PLUS)
             {
                 Eat(TokenType.PLUS);
@@ -97,10 +110,72 @@ public class Parser
         return node;
     }
 
+    private ASTNode CompExpr()
+    {
+        ASTNode node = Expr();
 
+        while (_currentToken.Type == TokenType.EQUAL || _currentToken.Type == TokenType.NOT_EQUAL ||
+            _currentToken.Type == TokenType.LESS_THAN || _currentToken.Type == TokenType.GREATER_THAN ||
+            _currentToken.Type == TokenType.LESS_THAN_OR_EQUAL || _currentToken.Type == TokenType.GREATER_THAN_OR_EQUAL)
+        {
+            Token token = _currentToken;
+
+            if (token.Type == TokenType.EQUAL)
+            {
+                Eat(TokenType.EQUAL);
+            }
+            else if (token.Type == TokenType.NOT_EQUAL)
+            {
+                Eat(TokenType.NOT_EQUAL);
+            }
+            else if (token.Type == TokenType.LESS_THAN)
+            {
+                Eat(TokenType.LESS_THAN);
+            }
+            else if (token.Type == TokenType.GREATER_THAN)
+            {
+                Eat(TokenType.GREATER_THAN);
+            }
+            else if (token.Type == TokenType.LESS_THAN_OR_EQUAL)
+            {
+                Eat(TokenType.LESS_THAN_OR_EQUAL);
+            }
+            else if (token.Type == TokenType.GREATER_THAN_OR_EQUAL)
+            {
+                Eat(TokenType.GREATER_THAN_OR_EQUAL);
+            }
+
+            node = new CompOpNode(node, token, Expr());
+        }
+
+        return node;
+    }
+
+
+    private ASTNode LogicExpr()
+    {
+        ASTNode node = CompExpr();
+
+        while (_currentToken.Type == TokenType.AND || _currentToken.Type == TokenType.OR)
+        {
+            Token token = _currentToken;
+            if (token.Type == TokenType.AND)
+            {
+                Eat(TokenType.AND);
+            }
+            else if (token.Type == TokenType.OR)
+            {
+                Eat(TokenType.OR);
+            }
+
+            node = new LogicOpNode(node, token, CompExpr());
+        }
+
+        return node;
+    }
 
     public ASTNode Parse()
     {
-        return Expr();
+        return LogicExpr();
     }
 }

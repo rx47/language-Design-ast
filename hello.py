@@ -1,0 +1,5 @@
+print(True != True)
+print(True == False)
+print(True != False)
+print(True and False)
+print(True or False)

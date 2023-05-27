@@ -24,6 +24,19 @@ public class Lexer
         }
     }
 
+    private char Peek()
+    {
+        int peekPosition = _position + 1;
+        if (peekPosition > _input.Length - 1)
+        {
+            return '\0';
+        }
+        else
+        {
+            return _input[peekPosition];
+        }
+    }
+
     private void SkipWhitespace()
     {
         while (_currentChar != '\0' && char.IsWhiteSpace(_currentChar))
@@ -104,9 +117,101 @@ public class Lexer
                 return new Token(TokenType.RPAREN, ")");
             }
 
+            if (_currentChar == '=')
+            {
+                if (Peek() == '=')
+                {
+                    Advance();
+                    Advance();
+                    return new Token(TokenType.EQUAL, "==");
+                }
+            }
+
+            if (_currentChar == '!')
+            {
+                if (Peek() == '=')
+                {
+                    Advance();
+                    Advance();
+                    return new Token(TokenType.NOT_EQUAL, "!=");
+                }
+                else
+                {
+                    Advance();
+                    return new Token(TokenType.NOT, "!");
+                }
+            }
+
+            if (_currentChar == '<')
+            {
+                if (Peek() == '=')
+                {
+                    Advance();
+                    Advance();
+                    return new Token(TokenType.LESS_THAN_OR_EQUAL, "<=");
+                }
+                else
+                {
+                    Advance();
+                    return new Token(TokenType.LESS_THAN, "<");
+                }
+            }
+
+            if (_currentChar == '>')
+            {
+                if (Peek() == '=')
+                {
+                    Advance();
+                    Advance();
+                    return new Token(TokenType.GREATER_THAN_OR_EQUAL, ">=");
+                }
+                else
+                {
+                    Advance();
+                    return new Token(TokenType.GREATER_THAN, ">");
+                }
+            }
+
+
+            if (_currentChar == '&')
+            {
+                if (Peek() == '&')
+                {
+                    Advance();
+                    Advance();
+                    return new Token(TokenType.AND, "&&");
+                }
+            }
+
+            if (_currentChar == '|')
+            {
+                if (Peek() == '|')
+                {
+                    Advance();
+                    Advance();
+                    return new Token(TokenType.OR, "||");
+                }
+            }
+
+            if (_position + 4 <= _input.Length && _input.Substring(_position, 4) == "true")
+            {
+                _position += 4;
+                Advance();
+                return new Token(TokenType.TRUE, "true");
+            }
+
+            if (_position + 5 <= _input.Length && _input.Substring(_position, 5) == "false")
+            {
+                _position += 5;
+                Advance();
+                return new Token(TokenType.FALSE, "false");
+            }
+
+
+
+            Advance();
             throw new Exception("Error parsing input");
         }
-
         return new Token(TokenType.EOF, string.Empty);
     }
 }

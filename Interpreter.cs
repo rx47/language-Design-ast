@@ -7,7 +7,7 @@ public class Interpreter
         _parser = parser;
     }
 
-    private double Visit(ASTNode node)
+    private dynamic Visit(ASTNode node)
     {
         if (node is Num)
         {
@@ -21,6 +21,18 @@ public class Interpreter
         {
             return Visit((UnaryOp)node);
         }
+        else if (node is BoolNode)
+        {
+            return Visit((BoolNode)node);
+        }
+        else if (node is CompOpNode)
+        {
+            return Visit((CompOpNode)node);
+        }
+        else if (node is LogicOpNode)
+        {
+            return Visit((LogicOpNode)node);
+        }
         else
         {
             throw new Exception($"Unexpected node type {node.GetType()}.");
@@ -30,6 +42,11 @@ public class Interpreter
     private double Visit(Num node)
     {
         return double.Parse(node.Token.Value);
+    }
+
+    private bool Visit(BoolNode node)
+    {
+        return node.Value;
     }
 
     private double Visit(UnaryOp node)
@@ -72,7 +89,55 @@ public class Interpreter
         }
     }
 
-    public double Interpret()
+    private bool Visit(CompOpNode node)
+    {
+        if (node.Token.Type == TokenType.EQUAL)
+        {
+            return Visit(node.Left) == Visit(node.Right);
+        }
+        else if (node.Token.Type == TokenType.NOT_EQUAL)
+        {
+            return Visit(node.Left) != Visit(node.Right);
+        }
+        else if (node.Token.Type == TokenType.LESS_THAN)
+        {
+            return Visit(node.Left) < Visit(node.Right);
+        }
+        else if (node.Token.Type == TokenType.LESS_THAN_OR_EQUAL)
+        {
+            return Visit(node.Left) <= Visit(node.Right);
+        }
+        else if (node.Token.Type == TokenType.GREATER_THAN)
+        {
+            return Visit(node.Left) > Visit(node.Right);
+        }
+        else if (node.Token.Type == TokenType.GREATER_THAN_OR_EQUAL)
+        {
+            return Visit(node.Left) >= Visit(node.Right);
+        }
+        else
+        {
+            throw new Exception($"Unexpected token type {node.Token.Type}.");
+        }
+    }
+
+    private bool Visit(LogicOpNode node)
+    {
+        if (node.Token.Type == TokenType.AND)
+        {
+            return Visit(node.Left) && Visit(node.Right);
+        }
+        else if (node.Token.Type == TokenType.OR)
+        {
+            return Visit(node.Left) || Visit(node.Right);
+        }
+        else
+        {
+            throw new Exception($"Unexpected token type {node.Token.Type}.");
+        }
+    }
+
+    public dynamic Interpret()
     {
         var tree = _parser.Parse();
         return Visit(tree);

@@ -36,3 +36,37 @@ public class Num : ASTNode
     {
     }
 }
+
+public class BoolNode : ASTNode
+{
+    public bool Value { get; set; }
+
+    public BoolNode(Token token) : base(token)
+    {
+        Value = token.Type == TokenType.TRUE;
+    }
+}
+
+public class CompOpNode : ASTNode
+{
+    public ASTNode Left { get; set; }
+    public ASTNode Right { get; set; }
+
+    public CompOpNode(ASTNode left, Token op, ASTNode right) : base(op)
+    {
+        Left = left;
+        Right = right;
+    }
+}
+
+public class LogicOpNode : ASTNode
+{
+    public ASTNode Left { get; set; }
+    public ASTNode Right { get; set; }
+
+    public LogicOpNode(ASTNode left, Token op, ASTNode right) : base(op)
+    {
+        Left = left;
+        Right = right;
+    }
+}
