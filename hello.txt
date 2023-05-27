@@ -3,7 +3,8 @@ true == false
 true != false
 true && false
 true || false
-(1 + 1) * 2 == 3 cant seem to perform == or && in ()
+(1 + 1) * 2 - 3
 1 == 2
 5 < 10
 5 - 4 == 30
+(5 - 4 == 30)
