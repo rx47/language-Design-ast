@@ -209,8 +209,9 @@ public class Lexer
 
 
 
-            Advance();
-            throw new Exception("Error parsing input");
+            //Advance();
+            //throw new Exception("Error parsing input");
+            throw new Exception($"Error parsing input at position {_position}: Unexpected character '{_currentChar}'");
         }
         return new Token(TokenType.EOF, string.Empty);
     }

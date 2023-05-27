@@ -49,7 +49,7 @@ public class Interpreter
         return node.Value;
     }
 
-    private double Visit(UnaryOp node)
+    private dynamic Visit(UnaryOp node)
     {
         if (node.Token.Type == TokenType.PLUS)
         {
@@ -58,6 +58,10 @@ public class Interpreter
         else if (node.Token.Type == TokenType.MINUS)
         {
             return -Visit(node.Expr);
+        }
+        else if (node.Token.Type == TokenType.NOT)
+        {
+            return !Visit(node.Expr);
         }
         else
         {

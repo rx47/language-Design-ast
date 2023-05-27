@@ -1,6 +1,1 @@
-print(True != True)
-print(True == False)
-print(True != False)
-print(True and False)
-print(True or False)
-print(5 - 4 == 30)
+print(not(5 - 4 > 3 * 2) == (not False))

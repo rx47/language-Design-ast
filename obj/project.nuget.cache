@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "HU3eo1C8FfDDHAz1CjD3ldvjaJcgunr9dORjrgnMCn4qS3m66v4h7VRpjx0DpHTbhs9tv8/t9vm2hfByP/9P/A==",
+  "dgSpecHash": "JU80J0FBKylvNjg1g9BnD5bKSHQjHpIPv/MOppRlDABKScxFOyW9VwH7hnsGGHweTYbCb8svJqWq9FWm1RsDsw==",
   "success": true,
-  "projectFilePath": "/Users/rx/Desktop/Language Desgine/language_Design/language_Design.csproj",
+  "projectFilePath": "/Users/rx/Documents/language-Design-ast/language_Design.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

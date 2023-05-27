@@ -33,7 +33,7 @@ public class Parser
         else if (token.Type == TokenType.LPAREN)
         {
             Eat(TokenType.LPAREN);
-            ASTNode node = CompExpr();
+            ASTNode node = LogicExpr();
             Eat(TokenType.RPAREN);
             return node;
         }
