@@ -1,0 +1,15 @@
+/Users/rx/Documents/udo/Language Desgine/language_Design/bin/Debug/net7.0/language_Design
+/Users/rx/Documents/udo/Language Desgine/language_Design/bin/Debug/net7.0/language_Design.deps.json
+/Users/rx/Documents/udo/Language Desgine/language_Design/bin/Debug/net7.0/language_Design.runtimeconfig.json
+/Users/rx/Documents/udo/Language Desgine/language_Design/bin/Debug/net7.0/language_Design.dll
+/Users/rx/Documents/udo/Language Desgine/language_Design/bin/Debug/net7.0/language_Design.pdb
+/Users/rx/Documents/udo/Language Desgine/language_Design/obj/Debug/net7.0/language_Design.csproj.AssemblyReference.cache
+/Users/rx/Documents/udo/Language Desgine/language_Design/obj/Debug/net7.0/language_Design.GeneratedMSBuildEditorConfig.editorconfig
+/Users/rx/Documents/udo/Language Desgine/language_Design/obj/Debug/net7.0/language_Design.AssemblyInfoInputs.cache
+/Users/rx/Documents/udo/Language Desgine/language_Design/obj/Debug/net7.0/language_Design.AssemblyInfo.cs
+/Users/rx/Documents/udo/Language Desgine/language_Design/obj/Debug/net7.0/language_Design.csproj.CoreCompileInputs.cache
+/Users/rx/Documents/udo/Language Desgine/language_Design/obj/Debug/net7.0/language_Design.dll
+/Users/rx/Documents/udo/Language Desgine/language_Design/obj/Debug/net7.0/refint/language_Design.dll
+/Users/rx/Documents/udo/Language Desgine/language_Design/obj/Debug/net7.0/language_Design.pdb
+/Users/rx/Documents/udo/Language Desgine/language_Design/obj/Debug/net7.0/language_Design.genruntimeconfig.cache
+/Users/rx/Documents/udo/Language Desgine/language_Design/obj/Debug/net7.0/ref/language_Design.dll
