@@ -66,6 +66,19 @@ public class Lexer
         return double.Parse(result);
     }
 
+    private string String()
+    {
+        Advance(); // skip the opening quote
+        var result = "";
+        while (_currentChar != '\0' && _currentChar != '"')
+        {
+            result += _currentChar;
+            Advance();
+        }
+        Advance(); // skip the closing quote
+        return result;
+    }
+
     public Token GetNextToken()
     {
         while (_currentChar != '\0')
@@ -207,7 +220,10 @@ public class Lexer
                 return new Token(TokenType.FALSE, "false");
             }
 
-
+            if (_currentChar == '"')
+            {
+                return new Token(TokenType.STRING, String());
+            }
 
             //Advance();
             //throw new Exception("Error parsing input");

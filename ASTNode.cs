@@ -70,3 +70,25 @@ public class LogicOpNode : ASTNode
         Right = right;
     }
 }
+
+public class StringNode : ASTNode
+{
+    public string Value { get; set; }
+
+    public StringNode(Token token) : base(token)
+    {
+        Value = token.Value;
+    }
+}
+
+public class ConcatOp : ASTNode
+{
+    public ASTNode Left { get; set; }
+    public ASTNode Right { get; set; }
+
+    public ConcatOp(ASTNode left, Token op, ASTNode right) : base(op)
+    {
+        Left = left;
+        Right = right;
+    }
+}

@@ -59,6 +59,11 @@ public class Parser
             ASTNode node = new UnaryOp(token, Factor());
             return node;
         }
+        else if (token.Type == TokenType.STRING)
+        {
+            Eat(TokenType.STRING);
+            return new StringNode(token);
+        }
         else
         {
             throw new Exception($"Unexpected token type {token.Type}.");
@@ -173,6 +178,8 @@ public class Parser
 
         return node;
     }
+
+    
 
     public ASTNode Parse()
     {

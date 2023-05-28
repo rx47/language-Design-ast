@@ -33,11 +33,30 @@ public class Interpreter
         {
             return Visit((LogicOpNode)node);
         }
+        else if (node is StringNode)
+        {
+            return Visit((StringNode)node);
+        }
+        else if (node is ConcatOp)
+        {
+            return Visit((ConcatOp)node);
+        }
         else
         {
             throw new Exception($"Unexpected node type {node.GetType()}.");
         }
     }
+
+    private string Visit(StringNode node)
+    {
+        return node.Value;
+    }
+
+    private string Visit(ConcatOp node)
+    {
+        return Visit(node.Left) + Visit(node.Right);
+    }
+
 
     private double Visit(Num node)
     {
@@ -69,11 +88,19 @@ public class Interpreter
         }
     }
 
-    private double Visit(BinOp node)
+    private dynamic Visit(BinOp node)
     {
         if (node.Token.Type == TokenType.PLUS)
         {
-            return Visit(node.Left) + Visit(node.Right);
+            var left = Visit(node.Left);
+            var right = Visit(node.Right);
+
+            if(left is double && right is double)
+                return (double)left + (double)right;
+            else if(left is string && right is string)
+                return (string)left + (string)right;
+            else
+                throw new Exception("Type mismatch in addition operation");
         }
         else if (node.Token.Type == TokenType.MINUS)
         {

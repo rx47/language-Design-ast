@@ -20,7 +20,7 @@ public class TokenType
     public static readonly TokenType AND = new TokenType("AND");
     public static readonly TokenType OR = new TokenType("OR");
     public static readonly TokenType NOT = new TokenType("NOT");
-
+    public static readonly TokenType STRING = new TokenType("STRING");
 
     public string Name { get; set; }
 
