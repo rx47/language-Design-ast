@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/rx/Documents/language-Design-ast/language_Design.csproj": {}
+    "/Users/rx/Documents/udo/language-Design-ast/language_Design.csproj": {}
   },
   "projects": {
-    "/Users/rx/Documents/language-Design-ast/language_Design.csproj": {
+    "/Users/rx/Documents/udo/language-Design-ast/language_Design.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/rx/Documents/language-Design-ast/language_Design.csproj",
+        "projectUniqueName": "/Users/rx/Documents/udo/language-Design-ast/language_Design.csproj",
         "projectName": "language_Design",
-        "projectPath": "/Users/rx/Documents/language-Design-ast/language_Design.csproj",
+        "projectPath": "/Users/rx/Documents/udo/language-Design-ast/language_Design.csproj",
         "packagesPath": "/Users/rx/.nuget/packages/",
-        "outputPath": "/Users/rx/Documents/language-Design-ast/obj/",
+        "outputPath": "/Users/rx/Documents/udo/language-Design-ast/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/rx/.nuget/NuGet/NuGet.Config"
