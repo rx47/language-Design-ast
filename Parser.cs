@@ -197,10 +197,18 @@ public class Parser
         return node;
     }
 
-
-
     public ASTNode Parse()
     {
-        return LogicExpr();
+        if (_currentToken.Type == TokenType.PRINT) 
+        {
+            Eat(TokenType.PRINT);
+            ASTNode expression = LogicExpr();
+            return new PrintNode(_currentToken, expression);
+        }
+        else 
+        {
+            return LogicExpr();
+        }
     }
+
 }

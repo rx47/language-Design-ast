@@ -242,11 +242,19 @@ public class Lexer
                 return new Token(TokenType.STRING, String());
             }
 
+            if (_position + 5 <= _input.Length && _input.Substring(_position, 5) == "print" &&
+            (_position + 5 == _input.Length || char.IsWhiteSpace(_input[_position + 5]) || _input[_position + 5] == '('))
+            {
+                _position += 5;
+                Advance();
+                return new Token(TokenType.PRINT, "print");
+            }
+
+            // identifier should not be checked before print because print is a keyword
             if (char.IsLetter(_currentChar) || _currentChar == '_')
             {
                 return new Token(TokenType.IDENTIFIER, Identifier());
             }
-
             //throw new Exception("Error parsing input");
             throw new Exception($"Error parsing input at position {_position}: Unexpected character '{_currentChar}'");
         }

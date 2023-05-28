@@ -1,5 +1,6 @@
 public class TokenType
 {
+    // Declaring readonly fields representing different token types
     public static readonly TokenType NUMBER = new TokenType("NUMBER");
     public static readonly TokenType PLUS = new TokenType("PLUS");
     public static readonly TokenType MINUS = new TokenType("MINUS");

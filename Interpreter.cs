@@ -14,6 +14,15 @@ public class Interpreter
         set { _parser = value; } 
     }
 
+    public void Visit(PrintNode node)
+    {
+        // Evaluate the expression and convert the result to a string.
+        var value = Visit(node.Expression).ToString();
+
+        // Print the value.
+        Console.WriteLine(value);
+    }
+
     private dynamic Visit(ASTNode node)
     {
         if (node is Num)
@@ -51,6 +60,12 @@ public class Interpreter
         else if (node is VarNode)
         {
             return Visit((VarNode)node);
+        }
+        else if (node is PrintNode)
+        {
+            Visit((PrintNode)node);
+            return "";
+            //TODO: find a fix for return null have replaced it with return "" but that adds a new line
         }
         else
         {

@@ -102,3 +102,13 @@ public class VarNode : ASTNode
         Value = token.Value;
     }
 }
+
+public class PrintNode : ASTNode
+{
+    public ASTNode Expression { get; set; }
+
+    public PrintNode(Token token, ASTNode expression) : base(token)
+    {
+        Expression = expression;
+    }
+}

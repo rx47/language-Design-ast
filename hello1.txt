@@ -2,3 +2,4 @@ hello = 9 + 10
 hello = hello + 2
 bye = hello + 2
 bye = bye + hello * 2
+print("hello"+" "+"world")

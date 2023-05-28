@@ -14,3 +14,6 @@ false || false
 "hello" + " " + "world"
 "foo" + "bar" == "foobar"
 "10 corgis" != "10" + "corgis"
+quickMaths = 9 + 10
+quickMaths = quickMaths + 2
+print(quickMaths)
