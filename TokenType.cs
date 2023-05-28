@@ -21,6 +21,9 @@ public class TokenType
     public static readonly TokenType OR = new TokenType("OR");
     public static readonly TokenType NOT = new TokenType("NOT");
     public static readonly TokenType STRING = new TokenType("STRING");
+    public static readonly TokenType IDENTIFIER = new TokenType("IDENTIFIER");
+    public static readonly TokenType ASSIGN = new TokenType("ASSIGN");
+    public static readonly TokenType PRINT = new TokenType("PRINT");
 
     public string Name { get; set; }
 

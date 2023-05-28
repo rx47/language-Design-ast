@@ -92,3 +92,13 @@ public class ConcatOp : ASTNode
         Right = right;
     }
 }
+
+public class VarNode : ASTNode
+{
+    public string Value { get; set; }
+
+    public VarNode(Token token) : base(token)
+    {
+        Value = token.Value;
+    }
+}

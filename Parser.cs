@@ -64,6 +64,24 @@ public class Parser
             Eat(TokenType.STRING);
             return new StringNode(token);
         }
+        else if (token.Type == TokenType.IDENTIFIER)
+        {
+            Eat(TokenType.IDENTIFIER);
+
+            // If the next token is an assignment, consume the assignment operator and create a BinOp node.
+            if (_currentToken.Type == TokenType.ASSIGN)
+            {
+                Token assignToken = _currentToken;
+                Eat(TokenType.ASSIGN);
+                ASTNode right = LogicExpr();
+                return new BinOp(new VarNode(token), assignToken, right);
+            }
+            // Otherwise, create a VarNode.
+            else
+            {
+                return new VarNode(token);
+            }
+        }
         else
         {
             throw new Exception($"Unexpected token type {token.Type}.");
@@ -179,7 +197,7 @@ public class Parser
         return node;
     }
 
-    
+
 
     public ASTNode Parse()
     {

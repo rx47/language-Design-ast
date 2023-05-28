@@ -5,7 +5,7 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        string filePath = "hello.txt";
+        string filePath = "hello1.txt";
         
         if (!File.Exists(filePath))
         {
@@ -15,12 +15,21 @@ public class Program
 
         var lines = File.ReadAllLines(filePath);
         
+        // Create interpreter instance outside of the loop
+        Interpreter? interpreter = null;
         foreach (var line in lines)
         {
-            //Console.WriteLine($"calc> {line}");
             var lexer = new Lexer(line);
             var parser = new Parser(lexer);
-            var interpreter = new Interpreter(parser);
+            // Reuse the same interpreter for each line
+            if (interpreter == null)
+            {
+                interpreter = new Interpreter(parser);
+            }
+            else
+            {
+                interpreter.Parser = parser;
+            }
             var result = interpreter.Interpret();
             Console.WriteLine(result);
         }

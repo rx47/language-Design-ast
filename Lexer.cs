@@ -79,6 +79,18 @@ public class Lexer
         return result;
     }
 
+    private string Identifier()
+    {
+        var result = "";
+        while (_currentChar != '\0' && (char.IsLetterOrDigit(_currentChar) || _currentChar == '_'))
+        {
+            result += _currentChar;
+            Advance();
+        }
+        return result;
+    }
+
+
     public Token GetNextToken()
     {
         while (_currentChar != '\0')
@@ -137,6 +149,11 @@ public class Lexer
                     Advance();
                     Advance();
                     return new Token(TokenType.EQUAL, "==");
+                }
+                else
+                {
+                    Advance();
+                    return new Token(TokenType.ASSIGN, "=");
                 }
             }
 
@@ -225,7 +242,11 @@ public class Lexer
                 return new Token(TokenType.STRING, String());
             }
 
-            //Advance();
+            if (char.IsLetter(_currentChar) || _currentChar == '_')
+            {
+                return new Token(TokenType.IDENTIFIER, Identifier());
+            }
+
             //throw new Exception("Error parsing input");
             throw new Exception($"Error parsing input at position {_position}: Unexpected character '{_currentChar}'");
         }

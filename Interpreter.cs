@@ -1,10 +1,17 @@
 public class Interpreter
 {
     private Parser _parser;
+    private Dictionary<string, dynamic> _variables = new Dictionary<string, dynamic>();
 
     public Interpreter(Parser parser)
     {
         _parser = parser;
+    }
+
+    public Parser Parser 
+    { 
+        get { return _parser; } 
+        set { _parser = value; } 
     }
 
     private dynamic Visit(ASTNode node)
@@ -41,12 +48,26 @@ public class Interpreter
         {
             return Visit((ConcatOp)node);
         }
+        else if (node is VarNode)
+        {
+            return Visit((VarNode)node);
+        }
         else
         {
             throw new Exception($"Unexpected node type {node.GetType()}.");
         }
     }
 
+    public dynamic Visit(VarNode node)
+    {
+        string varName = node.Token.Value;
+        if (!_variables.ContainsKey(varName))
+        {
+            throw new Exception($"Variable {varName} not defined.");
+        }
+        return _variables[varName];
+    }
+    
     private string Visit(StringNode node)
     {
         return node.Value;
@@ -113,6 +134,13 @@ public class Interpreter
         else if (node.Token.Type == TokenType.DIVIDE)
         {
             return Visit(node.Left) / Visit(node.Right);
+        }
+        else if (node.Token.Type == TokenType.ASSIGN)
+        {
+            var varName = ((VarNode)node.Left).Token.Value;
+            var value = Visit(node.Right);
+            _variables[varName] = value;
+            return value;
         }
         else
         {
