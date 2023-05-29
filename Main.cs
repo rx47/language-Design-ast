@@ -9,7 +9,7 @@ public class Program
         
         if (!File.Exists(filePath))
         {
-            Console.WriteLine("The file 'hello.txt' does not exist.");
+            Console.WriteLine("The file does not exist.");
             return;
         }
 
