@@ -25,11 +25,17 @@ public class TokenType
     public static readonly TokenType IDENTIFIER = new TokenType("IDENTIFIER");
     public static readonly TokenType ASSIGN = new TokenType("ASSIGN");
     public static readonly TokenType PRINT = new TokenType("PRINT");
+    public static readonly TokenType INPUT = new TokenType("INPUT");
 
     public string Name { get; set; }
 
     private TokenType(string name)
     {
         Name = name;
+    }
+    
+    public override string ToString()
+    {
+        return Name;
     }
 }

@@ -17,11 +17,11 @@ public class Parser
         }
         else
         {
-            throw new Exception($"Expected token type {tokenType} but found {_currentToken.Type} instead.");
+            throw new Exception($"Unexpected token type {tokenType} but found {_currentToken.Type} instead.");
         }
     }
 
-
+    // the lower the following methods are in the file, the higher their precedence
     private ASTNode Factor()
     {
         Token token = _currentToken;
@@ -67,8 +67,6 @@ public class Parser
         else if (token.Type == TokenType.IDENTIFIER)
         {
             Eat(TokenType.IDENTIFIER);
-
-            // If the next token is an assignment, consume the assignment operator and create a BinOp node.
             if (_currentToken.Type == TokenType.ASSIGN)
             {
                 Token assignToken = _currentToken;
@@ -76,18 +74,23 @@ public class Parser
                 ASTNode right = LogicExpr();
                 return new BinOp(new VarNode(token), assignToken, right);
             }
-            // Otherwise, create a VarNode.
             else
             {
                 return new VarNode(token);
             }
+        }
+        else if (token.Type == TokenType.INPUT)
+        {
+            Eat(TokenType.INPUT);
+            string prompt = _currentToken.Value;
+            Eat(TokenType.STRING);
+            return new InputNode(token, prompt);
         }
         else
         {
             throw new Exception($"Unexpected token type {token.Type}.");
         }
     }
-
 
     private ASTNode Term()
     {
@@ -107,7 +110,6 @@ public class Parser
 
             node = new BinOp(node, token, Factor());
         }
-
         return node;
     }
 
@@ -126,10 +128,8 @@ public class Parser
             {
                 Eat(TokenType.MINUS);
             }
-
             node = new BinOp(node, token, Term());
         }
-
         return node;
     }
 
