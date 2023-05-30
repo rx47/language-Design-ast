@@ -4,7 +4,7 @@ bye = hello + 2
 bye = bye + hello * -2
 print("hello"+" "+"world")
 print("hello"+" "+"world")
-print("2"+ 2)
-print("hello "+ 2)
-here = input("here: ")
-print("here")
+print(2 + 2)
+print("hello " + "2")
+here = input("Enter a number: ")
+print(here + 45)

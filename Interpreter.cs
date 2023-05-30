@@ -23,11 +23,15 @@ public class Interpreter
     private dynamic Visit(InputNode node)
     {
         Console.Write(node.Prompt);
-        var take_input = Console.ReadLine();
-        return take_input ?? string.Empty;
+        string take_input = Console.ReadLine() ?? string.Empty;
+        
+        if (double.TryParse(take_input, out double number))
+        {
+            return number;
+        }
+        
+        return take_input;
     }
-
-
 
     private dynamic Visit(ASTNode node)
     {
@@ -101,7 +105,6 @@ public class Interpreter
         return Visit(node.Left) + Visit(node.Right);
     }
 
-
     private double Visit(Num node)
     {
         return double.Parse(node.Token.Value);
@@ -136,7 +139,21 @@ public class Interpreter
     {
         if (node.Token.Type == TokenType.PLUS)
         {
-            return Visit(node.Left) + Visit(node.Right);
+            //return Visit(node.Left) + Visit(node.Right);
+            var left = Visit(node.Left);
+            var right = Visit(node.Right);
+            if(left is double && right is double)
+            {
+                return (double)left + (double)right;
+            }
+            else if(left is string && right is string)
+            {
+                return (string)left + (string)right;
+            }
+            else
+            {
+                throw new Exception("Type mismatch in addition operation");
+            }
         }
         else if (node.Token.Type == TokenType.MINUS)
         {

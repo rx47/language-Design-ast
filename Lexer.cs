@@ -256,6 +256,14 @@ public class Lexer
                 return new Token(TokenType.INPUT, "input");
             }
 
+            if (_position + 2 <= _input.Length && _input.Substring(_position, 2) == "if" &&
+            (_position + 2 == _input.Length || char.IsWhiteSpace(_input[_position + 2]) || _input[_position + 2] == '('))
+            {
+                _position += 2;
+                Advance();
+                return new Token(TokenType.IF, "if");
+            }
+
             // identifier should not be checked before print because print is a keyword
             if (char.IsLetter(_currentChar) || _currentChar == '_')
             {

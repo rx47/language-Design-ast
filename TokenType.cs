@@ -26,6 +26,7 @@ public class TokenType
     public static readonly TokenType ASSIGN = new TokenType("ASSIGN");
     public static readonly TokenType PRINT = new TokenType("PRINT");
     public static readonly TokenType INPUT = new TokenType("INPUT");
+    public static readonly TokenType IF = new TokenType("IF");
 
     public string Name { get; set; }
 
