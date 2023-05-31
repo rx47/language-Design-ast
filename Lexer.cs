@@ -8,7 +8,7 @@ public class Lexer
     {
         _input = input;
         _position = 0;
-        _currentChar = _input[_position];
+        _currentChar = _input.Length > 0 ? _input[_position] : '\0';
     }
 
     private void Advance()

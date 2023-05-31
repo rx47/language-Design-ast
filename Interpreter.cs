@@ -227,10 +227,11 @@ public class Interpreter
             throw new Exception($"Unexpected token type {node.Token.Type}.");
         }
     }
-
-    public dynamic Interpret()
+    
+    public dynamic? Interpret()
     {
         var tree = _parser.Parse();
-        return Visit(tree);
+        return tree != null ? Visit(tree) : null;
     }
+
 }

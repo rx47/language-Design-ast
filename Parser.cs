@@ -14,10 +14,14 @@ public class Parser
         if (_currentToken.Type == tokenType)
         {
             _currentToken = _lexer.GetNextToken();
+            if (_currentToken == null)
+            {
+                _currentToken = new Token(TokenType.EOF, String.Empty);
+            }
         }
         else
         {
-            throw new Exception($"Unexpected token type {tokenType} but found {_currentToken.Type} instead.");
+            throw new Exception($"Expected token type {tokenType}, but found {_currentToken.Type} instead.");
         }
     }
 
@@ -197,18 +201,24 @@ public class Parser
         return node;
     }
 
-    public ASTNode Parse()
+    public ASTNode? Parse()
     {
-        if (_currentToken.Type == TokenType.PRINT) 
+        ASTNode? node;
+        if (_currentToken.Type == TokenType.PRINT)
         {
             Eat(TokenType.PRINT);
-            ASTNode expression = LogicExpr();
-            return new PrintNode(_currentToken, expression);
+            node = new PrintNode(_currentToken, LogicExpr());
         }
-        else 
+        else if (_currentToken.Type == TokenType.EOF)
         {
-            return LogicExpr();
+            // Handle EOF, for example by returning a special EOF node or null.
+            node = null;
         }
+        else
+        {
+            node = LogicExpr();
+        }
+        return node;
     }
 
 }

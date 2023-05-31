@@ -16,6 +16,10 @@
         Interpreter? interpreter = null;
         foreach (var line in lines)
         {
+            if (string.IsNullOrWhiteSpace(line))
+            {
+                continue;
+            }
             var lexer = new Lexer(line);
             var parser = new Parser(lexer);
             // Reuse the same interpreter for each line
@@ -28,6 +32,10 @@
                 interpreter.Parser = parser;
             }
             var result = interpreter.Interpret();
+            if (result == null)
+            {
+                continue;
+            }
             Console.WriteLine(result);
         }
     }

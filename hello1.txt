@@ -1,10 +1,16 @@
 hello = 9 + 10
 hello = hello + 2
 bye = hello + 2
+
 bye = bye + hello * -2
 print("hello"+" "+"world")
 print("hello"+" "+"world")
 print(2 + 2)
+
 print("hello " + "2")
+is_true = true
+is_false = false 
+
 string = input("Enter your name: ")
+
 print("Hi 👋 " + string)
