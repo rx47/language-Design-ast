@@ -14,3 +14,6 @@ print("hello world")
 print("hello" + " " + "world")
 print("foo" + "bar" == "foobar")
 print("10 corgis" != "10" + "corgis")
+quickMaths = 9 + 10
+quickMaths = quickMaths + 2
+print(quickMaths)

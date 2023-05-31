@@ -17,3 +17,7 @@ false || false
 quickMaths = 9 + 10
 quickMaths = quickMaths + 2
 print(quickMaths)
+here = input("Enter a number: ")
+print(here + 45 + quickMaths)
+name = input("Enter your name: ")
+print("Hi, 👋 " + name)

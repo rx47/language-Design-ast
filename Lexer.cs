@@ -264,6 +264,34 @@ public class Lexer
                 return new Token(TokenType.IF, "if");
             }
 
+            if (_position + 4 <= _input.Length && _input.Substring(_position, 4) == "else" &&
+            (_position + 4 == _input.Length || char.IsWhiteSpace(_input[_position + 4]) || _input[_position + 4] == '('))
+            {
+                _position += 4;
+                Advance();
+                return new Token(TokenType.ELSE, "else");
+            }
+
+            if (_position + 5 <= _input.Length && _input.Substring(_position, 5) == "while" &&
+            (_position + 5 == _input.Length || char.IsWhiteSpace(_input[_position + 5]) || _input[_position + 5] == '('))
+            {
+                _position += 5;
+                Advance();
+                return new Token(TokenType.WHILE, "while");
+            }
+
+            if (_currentChar == '{')
+            {
+                Advance();
+                return new Token(TokenType.LBRACE, "{");
+            }
+
+            if (_currentChar == '}')
+            {
+                Advance();
+                return new Token(TokenType.RBRACE, "}");
+            }
+
             // identifier should not be checked before print because print is a keyword
             if (char.IsLetter(_currentChar) || _currentChar == '_')
             {
