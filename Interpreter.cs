@@ -33,6 +33,47 @@ public class Interpreter
         return take_input;
     }
 
+    private dynamic Visit(IfNode node)
+    {
+        if (Visit(node.Condition))
+        {
+            return Visit(node.TrueBlock);
+        }
+        else if (node.FalseBlock != null)
+        {
+            return Visit(node.FalseBlock);
+        }
+        return string.Empty;
+    }
+
+    private dynamic Visit(BlockNode node)
+    {
+        dynamic result = string.Empty;
+
+        foreach (var statement in node.Statements)
+        {
+            result = Visit(statement);
+        }
+        return result;
+    }
+
+    private dynamic Visit(ElseNode node)
+    {
+        return Visit(node.Block);
+    }
+
+    private dynamic Visit(WhileNode node)
+    {
+        dynamic result = string.Empty;
+
+        while (Visit(node.Condition))
+        {
+            result = Visit(node.Block);
+        }
+        return result;
+    }
+
+
     private dynamic Visit(ASTNode node)
     {
         if (node is Num)
@@ -75,9 +116,25 @@ public class Interpreter
         {
             return Visit((PrintNode)node);;
         }
-            else if (node is InputNode)
+        else if (node is InputNode)
         {
             return Visit((InputNode)node);
+        }
+        else if (node is IfNode)
+        {
+            return Visit((IfNode)node);
+        }
+        else if (node is BlockNode)
+        {
+            return Visit((BlockNode)node);
+        }
+        else if (node is ElseNode)
+        {
+            return Visit((ElseNode)node);
+        }
+        else if (node is WhileNode)
+        {
+            return Visit((WhileNode)node);
         }
         else
         {

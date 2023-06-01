@@ -1,16 +1,12 @@
-hello = 9 + 10
-hello = hello + 2
-bye = hello + 2
+o = 5
+if (o == 5) { i = "hello" }
+else { i = "bye" }
+i = 0
 
-bye = bye + hello * -2
-print("hello"+" "+"world")
-print("hello"+" "+"world")
-print(2 + 2)
+i = i + 1
+i = i + 1
+i = i + 1
+i = i + 1
+i = i + 1
 
-print("hello " + "2")
-is_true = true
-is_false = false 
-
-string = input("Enter your name: ")
-
-print("Hi 👋 " + string)
+print(i)

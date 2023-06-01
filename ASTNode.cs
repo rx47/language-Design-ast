@@ -115,3 +115,50 @@ public class InputNode : ASTNode
         Prompt = prompt;
     }
 }
+
+public class IfNode : ASTNode
+{
+    public ASTNode Condition { get; set; }
+    public ASTNode TrueBlock { get; set; }
+    public ASTNode? FalseBlock { get; set; }
+
+    public IfNode(ASTNode condition, ASTNode trueBlock, ASTNode? falseBlock, Token token) : base(token)
+    {
+        Condition = condition;
+        TrueBlock = trueBlock;
+        FalseBlock = falseBlock;
+    }
+}
+
+public class ElseNode : ASTNode
+{
+    public ASTNode Block { get; set; }
+
+    public ElseNode(ASTNode block, Token token) : base(token)
+    {
+        Block = block;
+    }
+}
+
+public class BlockNode : ASTNode
+{
+    public List<ASTNode> Statements { get; set; }
+
+    public BlockNode(Token token, List<ASTNode> statements) : base(token)
+    {
+        Statements = statements;
+    }
+}
+
+public class WhileNode : ASTNode
+{
+    public ASTNode Condition { get; set; }
+    public ASTNode Block { get; set; }
+
+    public WhileNode(ASTNode condition, ASTNode block, Token token) : base(token)
+    {
+        Condition = condition;
+        Block = block;
+    }
+}
+

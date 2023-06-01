@@ -31,6 +31,10 @@ public class TokenType
     public static readonly TokenType WHILE = new TokenType("WHILE");
     public static readonly TokenType LBRACE = new TokenType("LBRACE");
     public static readonly TokenType RBRACE = new TokenType("RBRACE");
+    public static readonly TokenType BLOCK = new TokenType("BLOCK");
+    public static readonly TokenType NEWLINE = new TokenType("NEWLINE");
+    public static readonly TokenType INCREMENT = new TokenType("INCREMENT");
+    public static readonly TokenType DECREMENT = new TokenType("DECREMENT");
 
     public string Name { get; set; }
 

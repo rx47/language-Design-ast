@@ -280,6 +280,12 @@ public class Lexer
                 return new Token(TokenType.WHILE, "while");
             }
 
+            if (_currentChar == '\n')
+            {
+                Advance();
+                return new Token(TokenType.NEWLINE, "\n");
+            }
+
             if (_currentChar == '{')
             {
                 Advance();
@@ -290,6 +296,18 @@ public class Lexer
             {
                 Advance();
                 return new Token(TokenType.RBRACE, "}");
+            }
+
+            if (_currentChar == '+')
+            {
+                Advance();
+                return new Token(TokenType.INCREMENT, "+");
+            }
+
+            if (_currentChar == '-')
+            {
+                Advance();
+                return new Token(TokenType.DECREMENT, "-");
             }
 
             // identifier should not be checked before print because print is a keyword

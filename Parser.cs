@@ -90,6 +90,7 @@ public class Parser
             Eat(TokenType.STRING);
             return new InputNode(token, prompt);
         }
+
         else
         {
             throw new Exception($"Unexpected token type {token.Type}.");
@@ -209,6 +210,18 @@ public class Parser
             Eat(TokenType.PRINT);
             node = new PrintNode(_currentToken, LogicExpr());
         }
+        else if (_currentToken.Type == TokenType.IF)
+        {
+            node = IfStatement();
+        }
+        else if (_currentToken.Type == TokenType.ELSE)
+        {
+            node = ElseStatement();
+        }
+        else if (_currentToken.Type == TokenType.WHILE)
+        {
+            node = WhileStatement();
+        }
         else if (_currentToken.Type == TokenType.EOF)
         {
             // Handle EOF, for example by returning a special EOF node or null.
@@ -219,6 +232,64 @@ public class Parser
             node = LogicExpr();
         }
         return node;
+    }
+
+    private ASTNode IfStatement()
+    {
+        Eat(TokenType.IF);
+        Eat(TokenType.LPAREN);
+        var condition = LogicExpr();
+        Eat(TokenType.RPAREN);
+
+        Eat(TokenType.LBRACE);
+        var trueBlock = Statements();
+        Eat(TokenType.RBRACE);
+
+        ASTNode? falseBlock = null;
+        if (_currentToken.Type == TokenType.ELSE)
+        {
+            falseBlock = ElseStatement();
+        }
+        
+        return new IfNode(condition, trueBlock, falseBlock, new Token(TokenType.IF, "if"));
+    }
+
+
+    private ASTNode ElseStatement()
+    {
+        Eat(TokenType.ELSE);
+        Eat(TokenType.LBRACE);
+        var statements = Statements();
+        Eat(TokenType.RBRACE);
+        return new ElseNode(statements, new Token(TokenType.ELSE, "else"));
+    }
+
+    private BlockNode Statements()
+    {
+        var statements = new List<ASTNode>();
+
+        while (_currentToken.Type != TokenType.RBRACE && _currentToken.Type != TokenType.EOF)
+        {
+            statements.Add(LogicExpr());
+        }
+
+        return new BlockNode(new Token(TokenType.BLOCK, "block"), statements);
+    }
+    
+
+    private ASTNode WhileStatement()
+    {
+        Eat(TokenType.WHILE);
+        Eat(TokenType.LPAREN);
+        var condition = LogicExpr();
+        Eat(TokenType.RPAREN);
+
+        Eat(TokenType.LBRACE);
+        Console.WriteLine("Parsing true block");
+        var trueBlock = Statements();
+        Eat(TokenType.RBRACE);
+
+        return new WhileNode(condition, trueBlock, new Token(TokenType.WHILE, "while"));
     }
 
 }
