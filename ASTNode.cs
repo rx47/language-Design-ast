@@ -162,3 +162,14 @@ public class WhileNode : ASTNode
     }
 }
 
+public class AssignNode : ASTNode
+{
+    public string VarName { get; set; }
+    public ASTNode Value { get; set; }
+
+    public AssignNode(Token token, string varName, ASTNode value) : base(token)
+    {
+        VarName = varName;
+        Value = value;
+    }
+}

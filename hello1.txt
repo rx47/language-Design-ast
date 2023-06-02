@@ -1,12 +1,15 @@
 o = 5
 if (o == 5) { i = "hello" }
 else { i = "bye" }
-i = 0
+print(i)
 
-i = i + 1
-i = i + 1
-i = i + 1
-i = i + 1
-i = i + 1
+j = "hello"
+i = 0
+k = 50
+l = 100
+
+while ( 10 > i ) { i = i + 1; k = k + 1; l = l + 1}
 
 print(i)
+print(k)
+print(l)

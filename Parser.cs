@@ -71,17 +71,7 @@ public class Parser
         else if (token.Type == TokenType.IDENTIFIER)
         {
             Eat(TokenType.IDENTIFIER);
-            if (_currentToken.Type == TokenType.ASSIGN)
-            {
-                Token assignToken = _currentToken;
-                Eat(TokenType.ASSIGN);
-                ASTNode right = LogicExpr();
-                return new BinOp(new VarNode(token), assignToken, right);
-            }
-            else
-            {
-                return new VarNode(token);
-            }
+            return new VarNode(token);
         }
         else if (token.Type == TokenType.INPUT)
         {
@@ -207,8 +197,7 @@ public class Parser
         ASTNode? node;
         if (_currentToken.Type == TokenType.PRINT)
         {
-            Eat(TokenType.PRINT);
-            node = new PrintNode(_currentToken, LogicExpr());
+            node = PrintStatement();
         }
         else if (_currentToken.Type == TokenType.IF)
         {
@@ -222,6 +211,10 @@ public class Parser
         {
             node = WhileStatement();
         }
+        else if (_currentToken.Type == TokenType.IDENTIFIER)
+        {
+            node = AssignmentStatement();
+        }
         else if (_currentToken.Type == TokenType.EOF)
         {
             // Handle EOF, for example by returning a special EOF node or null.
@@ -233,7 +226,31 @@ public class Parser
         }
         return node;
     }
+    
+    private ASTNode AssignmentStatement()
+    {
+        Token token = _currentToken;
+        Eat(TokenType.IDENTIFIER);
+        if (_currentToken.Type == TokenType.ASSIGN)
+        {
+            Token assignToken = _currentToken;
+            Eat(TokenType.ASSIGN);
+            ASTNode right = LogicExpr();
+            return new BinOp(new VarNode(token), assignToken, right);
+        }
+        else
+        {
+            return new VarNode(token);
+        }
+    }
 
+    private ASTNode PrintStatement()
+    {
+        Eat(TokenType.PRINT);
+        var node = new PrintNode(_currentToken, LogicExpr());
+        return node;
+    }
+    
     private ASTNode IfStatement()
     {
         Eat(TokenType.IF);
@@ -270,9 +287,27 @@ public class Parser
 
         while (_currentToken.Type != TokenType.RBRACE && _currentToken.Type != TokenType.EOF)
         {
-            statements.Add(LogicExpr());
+            if (_currentToken.Type == TokenType.PRINT)
+            {
+                statements.Add(PrintStatement());
+            }
+            else if (_currentToken.Type == TokenType.IF)
+            {
+                statements.Add(IfStatement());
+            }
+            else if (_currentToken.Type == TokenType.WHILE)
+            {
+                statements.Add(WhileStatement());
+            }
+            else if (_currentToken.Type == TokenType.IDENTIFIER)
+            {
+                statements.Add(AssignmentStatement());
+            }
+            if (_currentToken.Type == TokenType.SEMICOLON)
+            {
+                Eat(TokenType.SEMICOLON);
+            }
         }
-
         return new BlockNode(new Token(TokenType.BLOCK, "block"), statements);
     }
     
@@ -285,7 +320,6 @@ public class Parser
         Eat(TokenType.RPAREN);
 
         Eat(TokenType.LBRACE);
-        Console.WriteLine("Parsing true block");
         var trueBlock = Statements();
         Eat(TokenType.RBRACE);
 

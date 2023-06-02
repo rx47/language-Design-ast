@@ -33,9 +33,7 @@ public class TokenType
     public static readonly TokenType RBRACE = new TokenType("RBRACE");
     public static readonly TokenType BLOCK = new TokenType("BLOCK");
     public static readonly TokenType NEWLINE = new TokenType("NEWLINE");
-    public static readonly TokenType INCREMENT = new TokenType("INCREMENT");
-    public static readonly TokenType DECREMENT = new TokenType("DECREMENT");
-
+    public static readonly TokenType SEMICOLON = new TokenType("SEMICOLON");
     public string Name { get; set; }
 
     private TokenType(string name)

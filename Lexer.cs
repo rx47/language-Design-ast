@@ -298,16 +298,10 @@ public class Lexer
                 return new Token(TokenType.RBRACE, "}");
             }
 
-            if (_currentChar == '+')
+            if (_currentChar == ';')
             {
                 Advance();
-                return new Token(TokenType.INCREMENT, "+");
-            }
-
-            if (_currentChar == '-')
-            {
-                Advance();
-                return new Token(TokenType.DECREMENT, "-");
+                return new Token(TokenType.SEMICOLON, ";");
             }
 
             // identifier should not be checked before print because print is a keyword
