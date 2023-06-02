@@ -1,20 +1,26 @@
 public class Parser
 {
-    private Lexer _lexer;
+    private List<Token> _tokens;
+    private int _currentTokenIndex;
     private Token _currentToken;
 
-    public Parser(Lexer lexer)
+    public Parser(List<Token> tokens)
     {
-        _lexer = lexer;
-        _currentToken = _lexer.GetNextToken();
+        _tokens = tokens;
+        _currentTokenIndex = 0;
+        _currentToken = _tokens[_currentTokenIndex];
     }
 
     private void Eat(TokenType tokenType)
     {
         if (_currentToken.Type == tokenType)
         {
-            _currentToken = _lexer.GetNextToken();
-            if (_currentToken == null)
+            _currentTokenIndex++;
+            if (_currentTokenIndex < _tokens.Count)
+            {
+                _currentToken = _tokens[_currentTokenIndex];
+            }
+            else
             {
                 _currentToken = new Token(TokenType.EOF, String.Empty);
             }

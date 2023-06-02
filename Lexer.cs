@@ -90,6 +90,20 @@ public class Lexer
         return result;
     }
 
+    public List<Token> GetAllTokens()
+    {
+        List<Token> tokens = new List<Token>();
+        Token token = GetNextToken();
+        while (token.Type != TokenType.EOF)
+        {
+            tokens.Add(token);
+            token = GetNextToken();
+        }
+        // add EOF token to the list
+        tokens.Add(new Token(TokenType.EOF, ""));
+        return tokens;
+    }
+
     public Token GetNextToken()
     {
         while (_currentChar != '\0')
@@ -241,7 +255,7 @@ public class Lexer
             }
 
             if (_position + 5 <= _input.Length && _input.Substring(_position, 5) == "print" &&
-            (_position + 5 == _input.Length || char.IsWhiteSpace(_input[_position + 5]) || _input[_position + 5] == '('))
+            (_position + 5 == _input.Length || char.IsWhiteSpace(_input[_position + 5])))
             {
                 _position += 5;
                 Advance();
