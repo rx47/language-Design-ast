@@ -22,14 +22,15 @@ public class Parser
             }
             else
             {
-                _currentToken = new Token(TokenType.EOF, String.Empty);
+                _currentToken = new Token(TokenType.EOF, String.Empty, -1);
             }
         }
         else
         {
-            throw new Exception($"Expected token type {tokenType}, but found {_currentToken.Type} instead.");
+            throw new Exception($"Expected token type {tokenType}, but found {_currentToken.Type} instead at line {_currentToken.LineNumber}.");
         }
     }
+
 
     // the lower the following methods are in the file, the higher their precedence
     private ASTNode Factor()
@@ -86,11 +87,11 @@ public class Parser
             Eat(TokenType.STRING);
             return new InputNode(token, prompt);
         }
-
         else
         {
-            throw new Exception($"Unexpected token type {token.Type}.");
+            throw new Exception($"Unexpected token type {token.Type} at line {token.LineNumber}.");
         }
+
     }
 
     private ASTNode Term()
@@ -198,41 +199,47 @@ public class Parser
         return node;
     }
 
-    public ASTNode? Parse()
+    public List<ASTNode> Parse()
     {
-        ASTNode? node;
-        if (_currentToken.Type == TokenType.PRINT)
+        var statements = new List<ASTNode>();
+
+        while (_currentToken.Type != TokenType.EOF)
         {
-            node = PrintStatement();
+            if (_currentToken.Type == TokenType.PRINT)
+            {
+                statements.Add(PrintStatement());
+            }
+            else if (_currentToken.Type == TokenType.IF)
+            {
+                statements.Add(IfStatement());
+            }
+            else if (_currentToken.Type == TokenType.ELSE)
+            {
+                statements.Add(ElseStatement());
+            }
+            else if (_currentToken.Type == TokenType.WHILE)
+            {
+                statements.Add(WhileStatement());
+            }
+            else if (_currentToken.Type == TokenType.IDENTIFIER)
+            {
+                statements.Add(AssignmentStatement());
+            }
+            else
+            {
+                throw new Exception($"Unexpected token type {_currentToken.Type}.");
+            }
+
+            // Ensure that statements are separated by semicolons
+            if (_currentToken.Type != TokenType.EOF)
+            {
+                Eat(TokenType.SEMICOLON);
+            }
         }
-        else if (_currentToken.Type == TokenType.IF)
-        {
-            node = IfStatement();
-        }
-        else if (_currentToken.Type == TokenType.ELSE)
-        {
-            node = ElseStatement();
-        }
-        else if (_currentToken.Type == TokenType.WHILE)
-        {
-            node = WhileStatement();
-        }
-        else if (_currentToken.Type == TokenType.IDENTIFIER)
-        {
-            node = AssignmentStatement();
-        }
-        else if (_currentToken.Type == TokenType.EOF)
-        {
-            // Handle EOF, for example by returning a special EOF node or null.
-            node = null;
-        }
-        else
-        {
-            node = LogicExpr();
-        }
-        return node;
+
+        return statements;
     }
-    
+
     private ASTNode AssignmentStatement()
     {
         Token token = _currentToken;
@@ -254,9 +261,11 @@ public class Parser
     {
         Eat(TokenType.PRINT);
         var node = new PrintNode(_currentToken, LogicExpr());
+        Eat(TokenType.RPAREN);
+        Eat(TokenType.SEMICOLON);
         return node;
     }
-    
+
     private ASTNode IfStatement()
     {
         Eat(TokenType.IF);
@@ -273,10 +282,9 @@ public class Parser
         {
             falseBlock = ElseStatement();
         }
-        
-        return new IfNode(condition, trueBlock, falseBlock, new Token(TokenType.IF, "if"));
+            
+        return new IfNode(condition, trueBlock, falseBlock, new Token(TokenType.IF, "if", _currentToken.LineNumber));
     }
-
 
     private ASTNode ElseStatement()
     {
@@ -284,7 +292,21 @@ public class Parser
         Eat(TokenType.LBRACE);
         var statements = Statements();
         Eat(TokenType.RBRACE);
-        return new ElseNode(statements, new Token(TokenType.ELSE, "else"));
+        return new ElseNode(statements, new Token(TokenType.ELSE, "else", _currentToken.LineNumber));
+    }
+
+    private ASTNode WhileStatement()
+    {
+        Eat(TokenType.WHILE);
+        Eat(TokenType.LPAREN);
+        var condition = LogicExpr();
+        Eat(TokenType.RPAREN);
+
+        Eat(TokenType.LBRACE);
+        var block = Statements();
+        Eat(TokenType.RBRACE);
+
+        return new WhileNode(condition, block, new Token(TokenType.WHILE, "while", _currentToken.LineNumber));
     }
 
     private BlockNode Statements()
@@ -296,6 +318,10 @@ public class Parser
             if (_currentToken.Type == TokenType.PRINT)
             {
                 statements.Add(PrintStatement());
+                if (_currentToken.Type == TokenType.SEMICOLON)
+                {
+                    Eat(TokenType.SEMICOLON);
+                }
             }
             else if (_currentToken.Type == TokenType.IF)
             {
@@ -308,28 +334,14 @@ public class Parser
             else if (_currentToken.Type == TokenType.IDENTIFIER)
             {
                 statements.Add(AssignmentStatement());
-            }
-            if (_currentToken.Type == TokenType.SEMICOLON)
-            {
-                Eat(TokenType.SEMICOLON);
+                if (_currentToken.Type == TokenType.SEMICOLON)
+                {
+                    Eat(TokenType.SEMICOLON);
+                }
             }
         }
-        return new BlockNode(new Token(TokenType.BLOCK, "block"), statements);
-    }
-    
-
-    private ASTNode WhileStatement()
-    {
-        Eat(TokenType.WHILE);
-        Eat(TokenType.LPAREN);
-        var condition = LogicExpr();
-        Eat(TokenType.RPAREN);
-
-        Eat(TokenType.LBRACE);
-        var trueBlock = Statements();
-        Eat(TokenType.RBRACE);
-
-        return new WhileNode(condition, trueBlock, new Token(TokenType.WHILE, "while"));
+        int lineNumber = statements.Any() ? statements.First().Token.LineNumber : -1; // or another default value
+        return new BlockNode(new Token(TokenType.BLOCK, "block", lineNumber), statements);
     }
 
 }

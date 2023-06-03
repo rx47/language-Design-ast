@@ -3,11 +3,13 @@ public class Lexer
     private string _input;
     private int _position;
     private char _currentChar;
+    private int _lineNumber;
 
     public Lexer(string input)
     {
         _input = input;
         _position = 0;
+        _lineNumber = 1;
         _currentChar = _input.Length > 0 ? _input[_position] : '\0';
     }
 
@@ -21,6 +23,10 @@ public class Lexer
         else
         {
             _currentChar = _input[_position];
+            if (_currentChar == '\n')
+            {
+                _lineNumber++;
+            }
         }
     }
 
@@ -100,7 +106,7 @@ public class Lexer
             token = GetNextToken();
         }
         // add EOF token to the list
-        tokens.Add(new Token(TokenType.EOF, ""));
+        tokens.Add(new Token(TokenType.EOF, "", _lineNumber));  // Add line number here
         return tokens;
     }
 
@@ -116,43 +122,43 @@ public class Lexer
 
             if (char.IsDigit(_currentChar))
             {
-                return new Token(TokenType.INTEGER, Number().ToString());
+                return new Token(TokenType.INTEGER, Number().ToString(), _lineNumber);
             }
 
             if (_currentChar == '+')
             {
                 Advance();
-                return new Token(TokenType.PLUS, "+");
+                return new Token(TokenType.PLUS, "+", _lineNumber);
             }
 
             if (_currentChar == '-')
             {
                 Advance();
-                return new Token(TokenType.MINUS, "-");
+                return new Token(TokenType.MINUS, "-", _lineNumber);
             }
 
             if (_currentChar == '*')
             {
                 Advance();
-                return new Token(TokenType.MULTIPLY, "*");
+                return new Token(TokenType.MULTIPLY, "*", _lineNumber);
             }
 
             if (_currentChar == '/')
             {
                 Advance();
-                return new Token(TokenType.DIVIDE, "/");
+                return new Token(TokenType.DIVIDE, "/", _lineNumber);
             }
 
             if (_currentChar == '(')
             {
                 Advance();
-                return new Token(TokenType.LPAREN, "(");
+                return new Token(TokenType.LPAREN, "(", _lineNumber);
             }
 
             if (_currentChar == ')')
             {
                 Advance();
-                return new Token(TokenType.RPAREN, ")");
+                return new Token(TokenType.RPAREN, ")", _lineNumber);
             }
 
             if (_currentChar == '=')
@@ -161,12 +167,12 @@ public class Lexer
                 {
                     Advance();
                     Advance();
-                    return new Token(TokenType.EQUAL, "==");
+                    return new Token(TokenType.EQUAL, "==", _lineNumber);
                 }
                 else
                 {
                     Advance();
-                    return new Token(TokenType.ASSIGN, "=");
+                    return new Token(TokenType.ASSIGN, "=", _lineNumber);
                 }
             }
 
@@ -176,12 +182,12 @@ public class Lexer
                 {
                     Advance();
                     Advance();
-                    return new Token(TokenType.NOT_EQUAL, "!=");
+                    return new Token(TokenType.NOT_EQUAL, "!=", _lineNumber);
                 }
                 else
                 {
                     Advance();
-                    return new Token(TokenType.NOT, "!");
+                    return new Token(TokenType.NOT, "!", _lineNumber);
                 }
             }
 
@@ -191,12 +197,12 @@ public class Lexer
                 {
                     Advance();
                     Advance();
-                    return new Token(TokenType.LESS_THAN_OR_EQUAL, "<=");
+                    return new Token(TokenType.LESS_THAN_OR_EQUAL, "<=", _lineNumber);
                 }
                 else
                 {
                     Advance();
-                    return new Token(TokenType.LESS_THAN, "<");
+                    return new Token(TokenType.LESS_THAN, "<", _lineNumber);
                 }
             }
 
@@ -206,12 +212,12 @@ public class Lexer
                 {
                     Advance();
                     Advance();
-                    return new Token(TokenType.GREATER_THAN_OR_EQUAL, ">=");
+                    return new Token(TokenType.GREATER_THAN_OR_EQUAL, ">=", _lineNumber);
                 }
                 else
                 {
                     Advance();
-                    return new Token(TokenType.GREATER_THAN, ">");
+                    return new Token(TokenType.GREATER_THAN, ">", _lineNumber);
                 }
             }
 
@@ -221,7 +227,7 @@ public class Lexer
                 {
                     Advance();
                     Advance();
-                    return new Token(TokenType.AND, "&&");
+                    return new Token(TokenType.AND, "&&", _lineNumber);
                 }
             }
 
@@ -231,7 +237,7 @@ public class Lexer
                 {
                     Advance();
                     Advance();
-                    return new Token(TokenType.OR, "||");
+                    return new Token(TokenType.OR, "||", _lineNumber);
                 }
             }
 
@@ -239,27 +245,27 @@ public class Lexer
             {
                 _position += 4;
                 Advance();
-                return new Token(TokenType.TRUE, "true");
+                return new Token(TokenType.TRUE, "true", _lineNumber);
             }
 
             if (_position + 5 <= _input.Length && _input.Substring(_position, 5) == "false")
             {
                 _position += 5;
                 Advance();
-                return new Token(TokenType.FALSE, "false");
+                return new Token(TokenType.FALSE, "false", _lineNumber);
             }
 
             if (_currentChar == '"')
             {
-                return new Token(TokenType.STRING, String());
+                return new Token(TokenType.STRING, String(), _lineNumber);
             }
 
             if (_position + 5 <= _input.Length && _input.Substring(_position, 5) == "print" &&
-            (_position + 5 == _input.Length || char.IsWhiteSpace(_input[_position + 5])))
+            (_position + 5 == _input.Length || char.IsWhiteSpace(_input[_position + 5]) || _input[_position + 5] == '('))
             {
                 _position += 5;
                 Advance();
-                return new Token(TokenType.PRINT, "print");
+                return new Token(TokenType.PRINT, "print", _lineNumber);
             }
 
             if (_position + 5 <= _input.Length && _input.Substring(_position, 5) == "input" &&
@@ -267,7 +273,7 @@ public class Lexer
             {
                 _position += 5;
                 Advance();
-                return new Token(TokenType.INPUT, "input");
+                return new Token(TokenType.INPUT, "input", _lineNumber);
             }
 
             if (_position + 2 <= _input.Length && _input.Substring(_position, 2) == "if" &&
@@ -275,7 +281,7 @@ public class Lexer
             {
                 _position += 2;
                 Advance();
-                return new Token(TokenType.IF, "if");
+                return new Token(TokenType.IF, "if", _lineNumber);
             }
 
             if (_position + 4 <= _input.Length && _input.Substring(_position, 4) == "else" &&
@@ -283,7 +289,7 @@ public class Lexer
             {
                 _position += 4;
                 Advance();
-                return new Token(TokenType.ELSE, "else");
+                return new Token(TokenType.ELSE, "else", _lineNumber);
             }
 
             if (_position + 5 <= _input.Length && _input.Substring(_position, 5) == "while" &&
@@ -291,40 +297,40 @@ public class Lexer
             {
                 _position += 5;
                 Advance();
-                return new Token(TokenType.WHILE, "while");
+                return new Token(TokenType.WHILE, "while", _lineNumber);
             }
 
             if (_currentChar == '\n')
             {
                 Advance();
-                return new Token(TokenType.NEWLINE, "\n");
+                return new Token(TokenType.NEWLINE, "\n", _lineNumber);
             }
 
             if (_currentChar == '{')
             {
                 Advance();
-                return new Token(TokenType.LBRACE, "{");
+                return new Token(TokenType.LBRACE, "{", _lineNumber);
             }
 
             if (_currentChar == '}')
             {
                 Advance();
-                return new Token(TokenType.RBRACE, "}");
+                return new Token(TokenType.RBRACE, "}", _lineNumber);
             }
 
             if (_currentChar == ';')
             {
                 Advance();
-                return new Token(TokenType.SEMICOLON, ";");
+                return new Token(TokenType.SEMICOLON, ";", _lineNumber);
             }
 
             // identifier should not be checked before print because print is a keyword
             if (char.IsLetter(_currentChar) || _currentChar == '_')
             {
-                return new Token(TokenType.IDENTIFIER, Identifier());
+                return new Token(TokenType.IDENTIFIER, Identifier(), _lineNumber);
             }
             throw new Exception($"Error parsing input at position {_position}: Unexpected character '{_currentChar}'");
         }
-        return new Token(TokenType.EOF, string.Empty);
+        return new Token(TokenType.EOF, string.Empty, _lineNumber);
     }
 }

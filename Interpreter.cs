@@ -287,8 +287,16 @@ public class Interpreter
     
     public dynamic? Interpret()
     {
-        var tree = _parser.Parse();
-        return tree != null ? Visit(tree) : null;
+        var trees = _parser.Parse();
+        dynamic? result = null;
+        
+        foreach (var tree in trees)
+        {
+            result = Visit(tree);
+        }
+        
+        return result;
     }
+
 
 }

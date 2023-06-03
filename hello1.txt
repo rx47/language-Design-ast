@@ -1,17 +1,9 @@
-o = 5
+o = 5;
 if (o == 5) { 
-    i = "hello" 
+    i = "hello"; 
+    print(i + " mf");
+    print("its me mario");
+} else { 
+    i = "bye";
+    print(i + " mf");
 }
-else { i = "bye" }
-print(i)
-
-j = "hello"
-i = 0
-k = 50
-l = 100
-
-while ( 10 > i ) { i = i + 1 k = k + 1 l = l + 1}
-
-print(i)
-print(k)
-print(l)
