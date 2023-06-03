@@ -14,10 +14,10 @@ public class Interpreter
         set { _parser = value; } 
     }
 
-    public string Visit(PrintNode node)
+    public void Visit(PrintNode node)
     {
         var value = Visit(node.Expression).ToString();
-        return value;
+        Console.WriteLine(value);
     }
 
     private dynamic Visit(InputNode node)
@@ -116,7 +116,8 @@ public class Interpreter
         }
         else if (node is PrintNode)
         {
-            return Visit((PrintNode)node);;
+            Visit((PrintNode)node);
+            return null;
         }
         else if (node is InputNode)
         {
@@ -295,23 +296,8 @@ public class Interpreter
         foreach (var tree in trees)
         {
             result = Visit(tree);
-        }
-        
+        } 
         return result;
     }
-
-    //public void Interpret()
-    //{
-    //    var trees = _parser.Parse();
-    //    dynamic? result = null;
-//
-    //    foreach (var tree in trees)
-    //    {
-    //        result = Visit(tree);
-    //        Console.WriteLine(result);
-    //    }
-    //}
-
-
-
+    
 }
