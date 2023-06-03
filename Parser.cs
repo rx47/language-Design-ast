@@ -82,10 +82,7 @@ public class Parser
         }
         else if (token.Type == TokenType.INPUT)
         {
-            Eat(TokenType.INPUT);
-            string prompt = _currentToken.Value;
-            Eat(TokenType.STRING);
-            return new InputNode(token, prompt);
+            return InputStatement();
         }
         else
         {
@@ -225,9 +222,23 @@ public class Parser
             {
                 statements.Add(AssignmentStatement());
             }
+            else if (_currentToken.Type == TokenType.INPUT)
+            {
+                statements.Add(InputStatement());
+            }
+            else if (_currentToken.Type == TokenType.INTEGER || 
+                    _currentToken.Type == TokenType.LPAREN ||
+                    _currentToken.Type == TokenType.MINUS ||
+                    _currentToken.Type == TokenType.NOT ||
+                    _currentToken.Type == TokenType.TRUE ||
+                    _currentToken.Type == TokenType.FALSE ||
+                    _currentToken.Type == TokenType.STRING)
+            {
+                statements.Add(LogicExpr());
+            }
             else
             {
-                throw new Exception($"Unexpected token type {_currentToken.Type}.");
+                throw new Exception($"Unexpected token type {_currentToken.Type} at line {_currentToken.LineNumber}.");
             }
 
             // Ensure that statements are separated by semicolons
@@ -265,6 +276,18 @@ public class Parser
         //Eat(TokenType.SEMICOLON);
         return node;
     }
+
+    private ASTNode InputStatement()
+    {
+        Token token = _currentToken;
+        Eat(TokenType.INPUT);
+        //Eat(TokenType.LPAREN);
+        string prompt = _currentToken.Value;
+        Eat(TokenType.STRING);
+        Eat(TokenType.RPAREN);
+        return new InputNode(token, prompt);
+    }
+
 
     private ASTNode IfStatement()
     {
