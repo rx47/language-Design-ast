@@ -32,7 +32,7 @@
                 var interpreter = new Interpreter(parser);
 
                 var result = interpreter.Interpret();
-                if (result != null)
+                if (result != null && result?.ToString() != "")
                 {
                     Console.WriteLine(result);
                 }

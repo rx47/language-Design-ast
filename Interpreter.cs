@@ -53,7 +53,10 @@ public class Interpreter
         foreach (var statement in node.Statements)
         {
             var result = Visit(statement);
-            results.Add(result);
+            if (result != null && result?.ToString() != "")
+            {
+                results.Add(result);
+            }
         }
         return string.Join(Environment.NewLine, results);
     }
@@ -117,7 +120,7 @@ public class Interpreter
         else if (node is PrintNode)
         {
             Visit((PrintNode)node);
-            return null;
+            return String.Empty;
         }
         else if (node is InputNode)
         {

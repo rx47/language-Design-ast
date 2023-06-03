@@ -1,12 +1,27 @@
 o = 5;
-if (o == 5) { 
+i = "Goku";
+
+if (o != 5) { 
     i = "hello"
     print(i + " mf")
     print("its me mario")
 } else { 
-    i = "bye"
-    print(i + " mf")
     print("luigi")
 };
 
-print("PLM")
+print(i);
+
+k = 5;
+l = 1;
+o = 5;
+
+while ( k > l ) {
+    if (o == 5) { 
+        print("is five")
+    } else { 
+        print("is not five")
+    }
+    l = l + 1;
+};
+
+print(k);
