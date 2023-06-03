@@ -262,7 +262,7 @@ public class Parser
         Eat(TokenType.PRINT);
         var node = new PrintNode(_currentToken, LogicExpr());
         Eat(TokenType.RPAREN);
-        Eat(TokenType.SEMICOLON);
+        //Eat(TokenType.SEMICOLON);
         return node;
     }
 

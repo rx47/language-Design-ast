@@ -1,9 +1,10 @@
 o = 5;
-if (o == 5) { 
-    i = "hello"; 
-    print(i + " mf");
-    print("its me mario");
+if (o != 5) { 
+    i = "hello"
+    print(i + " mf")
+    print("its me mario")
 } else { 
-    i = "bye";
-    print(i + " mf");
+    i = "bye"
+    print(i + " mf")
+    print("luigi")
 }

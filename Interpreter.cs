@@ -48,14 +48,16 @@ public class Interpreter
 
     private dynamic Visit(BlockNode node)
     {
-        dynamic result = string.Empty;
+        List<dynamic> results = new List<dynamic>();
 
         foreach (var statement in node.Statements)
         {
-            result = Visit(statement);
+            var result = Visit(statement);
+            results.Add(result);
         }
-        return result;
+        return string.Join(Environment.NewLine, results);
     }
+
 
     private dynamic Visit(ElseNode node)
     {
@@ -297,6 +299,19 @@ public class Interpreter
         
         return result;
     }
+
+    //public void Interpret()
+    //{
+    //    var trees = _parser.Parse();
+    //    dynamic? result = null;
+//
+    //    foreach (var tree in trees)
+    //    {
+    //        result = Visit(tree);
+    //        Console.WriteLine(result);
+    //    }
+    //}
+
 
 
 }
