@@ -1,10 +1,13 @@
-x = 3;
-i = true ;
 def name (one) {
-    print(x);
     x = 2 + one;
     return x;
 };
-print(x);
 x = name(5);
 print(x);
+
+
+def me () {
+    return "Hello";
+};
+p = me();
+print(p);
