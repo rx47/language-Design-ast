@@ -1,25 +1,5 @@
-def functionName (one) { 
-    l = 0
-    i = true
-    while ( i ) {
-        if ( l == one) { 
-            i = false
-        } else { 
-            print("Keep printing")
-        }
-        l = l + 1
-    }
+def name (one) { 
+    print(2 * one);
 };
 number = input("Enter a number here: ");
-functionName(number);
-
-l = 0;
-i = true ;
-while ( i ) {
-    if ( l == one) { 
-        i = false
-    } else { 
-        print("Keep")
-    }
-    l = l + 1
-};
+name(number);

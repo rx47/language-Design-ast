@@ -41,3 +41,18 @@ while ( i ) {
     }
     l = l + 1;
 };
+
+def functionName (one) { 
+    l = 0
+    i = true
+    while ( i ) {
+        if ( l == one) { 
+            i = false
+        } else { 
+            print("Keep printing")
+        }
+        l = l + 1
+    }
+};
+number = input("Enter a number here: ");
+functionName(number);
