@@ -59,9 +59,8 @@ public class Interpreter
                 results.Add(result);
             }
         }
-        return string.Join(Environment.NewLine, results);
+        return results.Count > 0 ? string.Join(Environment.NewLine, results) : String.Empty;
     }
-
 
     private dynamic Visit(ElseNode node)
     {
@@ -78,7 +77,6 @@ public class Interpreter
         }
         return result;
     }
-
 
     private dynamic Visit(ASTNode node)
     {
@@ -160,34 +158,24 @@ public class Interpreter
 
     private void Visit(FunctionNode node)
     {
-        // Store the function for later use
         _functions[node.Name] = node;
     }
 
     private dynamic Visit(FunctionCallNode node)
     {
-        // Check if the function is defined
         if (!_functions.ContainsKey(node.Name))
         {
             throw new Exception($"Undefined function {node.Name}");
         }
-
         FunctionNode function = _functions[node.Name];
-
-        // Check the number of arguments
         if (node.Arguments.Count != function.Parameters.Count)
         {
             throw new Exception($"Function {node.Name} expects {function.Parameters.Count} arguments");
         }
-
-        // Substitute the arguments into the function body
         for (int i = 0; i < node.Arguments.Count; i++)
         {
-            // Add the argument to the variables
             _variables[function.Parameters[i]] = Visit(node.Arguments[i]);
         }
-
-        // Execute the function body
         return Visit(function.Block);
     }
 
@@ -245,7 +233,6 @@ public class Interpreter
     {
         if (node.Token.Type == TokenType.PLUS)
         {
-            //return Visit(node.Left) + Visit(node.Right);
             var left = Visit(node.Left);
             var right = Visit(node.Right);
             if(left is double && right is double)
@@ -278,7 +265,7 @@ public class Interpreter
             var varName = ((VarNode)node.Left).Token.Value;
             var value = Visit(node.Right);
             _variables[varName] = value;
-            return value;
+            return String.Empty;
         }
         else
         {

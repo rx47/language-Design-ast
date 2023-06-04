@@ -13,7 +13,7 @@
         Console.WriteLine("Select option: \n1. Lex file and display results\n2. Parse file");
         var userInput = Console.ReadLine();
 
-        var code = File.ReadAllText(filePath); // Reads all lines at once
+        var code = File.ReadAllText(filePath); 
 
         switch(userInput)
         {
@@ -24,7 +24,7 @@
                 Console.WriteLine("Lexed tokens: ");
                 foreach (var token in allTokens)
                 {
-                    Console.WriteLine(token); // modify this line to display the token the way you want
+                    Console.WriteLine(token); 
                 }
                 break;
             case "2":

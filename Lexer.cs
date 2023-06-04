@@ -105,8 +105,7 @@ public class Lexer
             tokens.Add(token);
             token = GetNextToken();
         }
-        // add EOF token to the list
-        tokens.Add(new Token(TokenType.EOF, "", _lineNumber));  // Add line number here
+        tokens.Add(new Token(TokenType.EOF, "", _lineNumber));
         return tokens;
     }
 
@@ -308,7 +307,6 @@ public class Lexer
                 return new Token(TokenType.WHILE, "while", _lineNumber);
             }
 
-            // create one for funtion declaration but make def a keyword
             if (_position + 3 <= _input.Length && _input.Substring(_position, 3) == "def" &&
             (_position + 3 == _input.Length || char.IsWhiteSpace(_input[_position + 3]) || _input[_position + 3] == '('))
             {
@@ -347,7 +345,6 @@ public class Lexer
                 return new Token(TokenType.SEMICOLON, ";", _lineNumber);
             }
 
-            // identifier should not be checked before print because print is a keyword
             if (char.IsLetter(_currentChar) || _currentChar == '_')
             {
                 return new Token(TokenType.IDENTIFIER, Identifier(), _lineNumber);
