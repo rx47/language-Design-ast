@@ -191,7 +191,7 @@ public class Interpreter
         }
         else if (node is FunctionCallNode)
         {
-            return Visit((FunctionCallNode)node);
+            return Visit((FunctionCallNode)node) ?? String.Empty;
         }
         else if (node is ReturnNode)
         {
@@ -208,7 +208,7 @@ public class Interpreter
         _functions[node.Name] = node;
     }
 
-    private dynamic Visit(FunctionCallNode node)
+    private dynamic? Visit(FunctionCallNode node)
     {
         if (!_functions.ContainsKey(node.Name))
         {

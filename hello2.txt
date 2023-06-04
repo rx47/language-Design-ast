@@ -1,10 +1,8 @@
-
-
 i = 4;
 def name (one) {
-    i = 2 + one;
-    print(i);
-    return i;
+    j = 2 + one;
+    return j;
+    print(j);
 };
 name(5);
 print(i);
