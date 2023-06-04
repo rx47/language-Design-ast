@@ -185,3 +185,29 @@ public class AssignNode : ASTNode
         Value = value;
     }
 }
+
+public class FunctionNode : ASTNode
+{
+    public string Name { get; set; }
+    public List<string> Parameters { get; set; }
+    public ASTNode Block { get; set; }
+
+    public FunctionNode(Token token, string name, List<string> parameters, ASTNode block) : base(token)
+    {
+        Name = name;
+        Parameters = parameters;
+        Block = block;
+    }
+}
+
+public class FunctionCallNode : ASTNode
+{
+    public string Name { get; set; }
+    public List<ASTNode> Arguments { get; set; }
+
+    public FunctionCallNode(Token token, string name, List<ASTNode> arguments) : base(token)
+    {
+        Name = name;
+        Arguments = arguments;
+    }
+}

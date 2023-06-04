@@ -35,6 +35,8 @@ public class TokenType
     public static readonly TokenType BLOCK = new TokenType("BLOCK");
     public static readonly TokenType NEWLINE = new TokenType("NEWLINE");
     public static readonly TokenType SEMICOLON = new TokenType("SEMICOLON");
+    public static readonly TokenType FUNCTION = new TokenType("FUNCTION");
+    public static readonly TokenType COMMA = new TokenType("COMMA");
     public string Name { get; set; }
 
     private TokenType(string name)

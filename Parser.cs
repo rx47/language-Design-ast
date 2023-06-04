@@ -84,6 +84,11 @@ public class Parser
         {
             return InputStatement();
         }
+        else if (token.Type == TokenType.FUNCTION)
+        {
+            //Eat(TokenType.FUNCTION);
+            return FunctionStatement();
+        }
         else
         {
             throw new Exception($"Unexpected token type {token.Type} at line {token.LineNumber}.");
@@ -218,9 +223,9 @@ public class Parser
             {
                 statements.Add(WhileStatement());
             }
-            else if (_currentToken.Type == TokenType.IDENTIFIER)
+            else if (_currentToken.Type == TokenType.IDENTIFIER) 
             {
-                statements.Add(AssignmentStatement());
+                statements.Add(IdentifierStatement());
             }
             else if (_currentToken.Type == TokenType.INPUT)
             {
@@ -236,6 +241,10 @@ public class Parser
             {
                 statements.Add(LogicExpr());
             }
+            else if (_currentToken.Type == TokenType.FUNCTION)
+            {
+                statements.Add(FunctionStatement());
+            }
             else
             {
                 throw new Exception($"Unexpected token type {_currentToken.Type} at line {_currentToken.LineNumber}.");
@@ -249,6 +258,32 @@ public class Parser
         }
 
         return statements;
+    }
+
+    private ASTNode IdentifierStatement()
+    {
+        Token token = _currentToken;
+        string identifierName = _currentToken.Value;
+        Eat(TokenType.IDENTIFIER);
+
+        if (_currentToken.Type == TokenType.LPAREN)
+        {
+            // this is a function call
+            return FunctionCallStatement(identifierName, token);
+        }
+        else if (_currentToken.Type == TokenType.ASSIGN)
+        {
+            // this is a variable assignment
+            Token assignToken = _currentToken;
+            Eat(TokenType.ASSIGN);
+            ASTNode right = LogicExpr();
+            return new BinOp(new VarNode(token), assignToken, right);
+        }
+        else
+        {
+            // this is a variable reference
+            return new VarNode(token);
+        }
     }
 
     private ASTNode AssignmentStatement()
@@ -360,6 +395,51 @@ public class Parser
         return new WhileNode(condition, block, new Token(TokenType.WHILE, "while", _currentToken.LineNumber));
     }
 
+    private ASTNode FunctionStatement()
+    {
+        Eat(TokenType.FUNCTION);
+        string name = _currentToken.Value;
+        Eat(TokenType.IDENTIFIER);
+        Eat(TokenType.LPAREN);
+        var parameters = new List<string>(); 
+        while (_currentToken.Type != TokenType.RPAREN)
+        {
+            parameters.Add(_currentToken.Value);
+            Eat(TokenType.IDENTIFIER);
+            if (_currentToken.Type == TokenType.COMMA)
+            {
+                Eat(TokenType.COMMA);
+            }
+        }
+        Eat(TokenType.RPAREN);
+        Eat(TokenType.LBRACE);
+        var block = Statements();
+        Eat(TokenType.RBRACE);
+        return new FunctionNode(new Token(TokenType.FUNCTION, name, _currentToken.LineNumber), name, parameters, block);
+    }
+
+    private ASTNode FunctionCallStatement(string functionName, Token token)
+    {
+        Eat(TokenType.LPAREN);
+        var arguments = new List<ASTNode>();
+
+        while (_currentToken.Type != TokenType.RPAREN)
+        {
+            arguments.Add(LogicExpr());
+
+            if (_currentToken.Type == TokenType.COMMA)
+            {
+                Eat(TokenType.COMMA);
+            }
+        }
+
+        Eat(TokenType.RPAREN);
+        
+        return new FunctionCallNode(token, functionName, arguments);
+    }
+
+
+
     private BlockNode Statements()
     {
         var statements = new List<ASTNode>();
@@ -390,6 +470,10 @@ public class Parser
                     Eat(TokenType.SEMICOLON);
                 }
             }
+            //else if (_currentToken.Type == TokenType.FUNCTION)
+            //{
+            //    statements.Add(FunctionStatement());
+            //}
         }
         int lineNumber = statements.Any() ? statements.First().Token.LineNumber : -1; // or another default value
         return new BlockNode(new Token(TokenType.BLOCK, "block", lineNumber), statements);

@@ -308,6 +308,21 @@ public class Lexer
                 return new Token(TokenType.WHILE, "while", _lineNumber);
             }
 
+            // create one for funtion declaration but make def a keyword
+            if (_position + 3 <= _input.Length && _input.Substring(_position, 3) == "def" &&
+            (_position + 3 == _input.Length || char.IsWhiteSpace(_input[_position + 3]) || _input[_position + 3] == '('))
+            {
+                _position += 3;
+                Advance();
+                return new Token(TokenType.FUNCTION, "def", _lineNumber);
+            }
+
+            if (_currentChar == ',')
+            {
+                Advance();
+                return new Token(TokenType.COMMA, ",", _lineNumber);
+            }
+
             if (_currentChar == '\n')
             {
                 Advance();

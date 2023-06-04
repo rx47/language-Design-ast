@@ -30,3 +30,22 @@ if (i == 5) {
 } else { 
     print("Luigi")
 };
+
+l = 0;
+i = true ;
+j = "Goku";
+while ( i ) {
+    if (l == 10) { 
+        print("Super Saiyan " + j)
+        i = false
+    } else if (l == 20) { 
+        print("one peice")
+        i = false
+    } else if (l == 40) { 
+        print("naruto")
+        i = false
+    } else { 
+        print("its me mario")
+    }
+    l = l + 1;
+};

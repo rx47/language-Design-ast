@@ -1,0 +1,5 @@
+def functionName (one) { 
+    return = one * 10;
+};
+number = input("Enter a number here: ");
+functionName(number);

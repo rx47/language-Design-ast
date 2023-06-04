@@ -2,6 +2,7 @@ public class Interpreter
 {
     private Parser _parser;
     private Dictionary<string, dynamic> _variables = new Dictionary<string, dynamic>();
+    private Dictionary<string, FunctionNode> _functions = new Dictionary<string, FunctionNode>();
 
     public Interpreter(Parser parser)
     {
@@ -142,10 +143,52 @@ public class Interpreter
         {
             return Visit((WhileNode)node);
         }
+        else if (node is FunctionNode)
+        {
+            Visit((FunctionNode)node);
+            return String.Empty;
+        }
+        else if (node is FunctionCallNode)
+        {
+            return Visit((FunctionCallNode)node);
+        }
         else
         {
             throw new Exception($"Unexpected node type {node.GetType()}.");
         }
+    }
+
+    private void Visit(FunctionNode node)
+    {
+        // Store the function for later use
+        _functions[node.Name] = node;
+    }
+
+    private dynamic Visit(FunctionCallNode node)
+    {
+        // Check if the function is defined
+        if (!_functions.ContainsKey(node.Name))
+        {
+            throw new Exception($"Undefined function {node.Name}");
+        }
+
+        FunctionNode function = _functions[node.Name];
+
+        // Check the number of arguments
+        if (node.Arguments.Count != function.Parameters.Count)
+        {
+            throw new Exception($"Function {node.Name} expects {function.Parameters.Count} arguments");
+        }
+
+        // Substitute the arguments into the function body
+        for (int i = 0; i < node.Arguments.Count; i++)
+        {
+            // Add the argument to the variables
+            _variables[function.Parameters[i]] = Visit(node.Arguments[i]);
+        }
+
+        // Execute the function body
+        return Visit(function.Block);
     }
 
     public dynamic Visit(VarNode node)
