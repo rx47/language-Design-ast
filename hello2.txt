@@ -1,4 +1,10 @@
+x = 3;
+i = true ;
 def name (one) {
-    return 2 + one;
+    print(x);
+    x = 2 + one;
+    return x;
 };
-print(name(5));
+print(x);
+x = name(5);
+print(x);
