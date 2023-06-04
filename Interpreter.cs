@@ -1,3 +1,13 @@
+public class ReturnException : Exception
+{
+    public dynamic Value { get; }
+    
+    public ReturnException(dynamic value)
+    {
+        Value = value;
+    }
+}
+
 public class Interpreter
 {
     private Parser _parser;
@@ -106,6 +116,11 @@ public class Interpreter
         return result;
     }
 
+    private dynamic Visit(ReturnNode node)
+    {
+        return Visit(node.Value);
+    }
+
     private dynamic Visit(ASTNode node)
     {
         if (node is Num)
@@ -178,6 +193,10 @@ public class Interpreter
         {
             return Visit((FunctionCallNode)node);
         }
+        else if (node is ReturnNode)
+        {
+            return Visit((ReturnNode)node);
+        }
         else
         {
             throw new Exception($"Unexpected node type {node.GetType()}.");
@@ -205,7 +224,17 @@ public class Interpreter
         {
             AssignVariable(function.Parameters[i], Visit(node.Arguments[i]));
         }
-        dynamic result = Visit(function.Block);
+
+        dynamic? result = null;
+        try
+        {
+            Visit(function.Block);
+        }
+        catch (ReturnException e)
+        {
+            result = e.Value;
+        }
+        
         ExitScope();
         return result;
     }

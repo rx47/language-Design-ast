@@ -315,6 +315,15 @@ public class Lexer
                 return new Token(TokenType.FUNCTION, "def", _lineNumber);
             }
 
+            // create one for the return keyword
+            if (_position + 6 <= _input.Length && _input.Substring(_position, 6) == "return" &&
+            (_position + 6 == _input.Length || char.IsWhiteSpace(_input[_position + 6]) || _input[_position + 6] == '('))
+            {
+                _position += 6;
+                Advance();
+                return new Token(TokenType.RETURN, "return", _lineNumber);
+            }
+
             if (_currentChar == ',')
             {
                 Advance();

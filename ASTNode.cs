@@ -211,3 +211,13 @@ public class FunctionCallNode : ASTNode
         Arguments = arguments;
     }
 }
+
+public class ReturnNode : ASTNode
+{
+    public ASTNode Value { get; set; }
+
+    public ReturnNode(Token token, ASTNode value) : base(token)
+    {
+        Value = value;
+    }
+}

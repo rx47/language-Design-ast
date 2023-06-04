@@ -36,6 +36,7 @@ public class TokenType
     public static readonly TokenType SEMICOLON = new TokenType("SEMICOLON");
     public static readonly TokenType FUNCTION = new TokenType("FUNCTION");
     public static readonly TokenType COMMA = new TokenType("COMMA");
+    public static readonly TokenType RETURN = new TokenType("RETURN");
     public string Name { get; set; }
 
     private TokenType(string name)

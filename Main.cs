@@ -11,7 +11,8 @@
         }
 
         Console.WriteLine("Select option: \n1. Lex file and display results\n2. Parse file");
-        var userInput = Console.ReadLine();
+        //var userInput = Console.ReadLine();
+        var userInput = "2";
 
         var code = File.ReadAllText(filePath); 
 

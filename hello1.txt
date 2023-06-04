@@ -56,3 +56,19 @@ def functionName (one) {
 };
 number = input("Enter a number here: ");
 functionName(number);
+
+
+
+is_running = true ;
+shopping_list = "";
+
+while (is_running) {
+    item = input("add an item to the shopping list: ");
+    if (item == "") {
+        is_running = false
+    }
+
+    shopping_list = shopping_list + ", " + item
+};
+
+print(shopping_list);

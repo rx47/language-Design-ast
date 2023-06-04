@@ -243,6 +243,10 @@ public class Parser
             {
                 statements.Add(FunctionStatement());
             }
+            else if (_currentToken.Type == TokenType.RETURN)
+            {
+                statements.Add(ReturnStatement());
+            }
             else
             {
                 throw new Exception($"Unexpected token type {_currentToken.Type} at line {_currentToken.LineNumber}.");
@@ -430,6 +434,13 @@ public class Parser
         return new FunctionCallNode(token, functionName, arguments);
     }
 
+    private ASTNode ReturnStatement()
+    {
+        Eat(TokenType.RETURN);
+        var node = new ReturnNode(_currentToken, LogicExpr());
+        Eat(TokenType.SEMICOLON);
+        return node;
+    }
 
 
     private BlockNode Statements()
@@ -457,6 +468,18 @@ public class Parser
             else if (_currentToken.Type == TokenType.IDENTIFIER)
             {
                 statements.Add(AssignmentStatement());
+                if (_currentToken.Type == TokenType.SEMICOLON)
+                {
+                    Eat(TokenType.SEMICOLON);
+                }
+            }
+            else if (_currentToken.Type == TokenType.RETURN)
+            {
+                statements.Add(ReturnStatement());
+            }
+            else
+            {
+                statements.Add(LogicExpr());
                 if (_currentToken.Type == TokenType.SEMICOLON)
                 {
                     Eat(TokenType.SEMICOLON);
