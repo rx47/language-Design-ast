@@ -14,6 +14,7 @@ public class Lexer
         _currentChar = _input.Length > 0 ? _input[_position] : '\0';
     }
 
+    // skip whitespace
     private void Advance()
     {
         _position++;
@@ -31,6 +32,7 @@ public class Lexer
         }
     }
 
+    // look at the next character without advancing
     private char Peek()
     {
         int peekPosition = _position + 1;
@@ -316,7 +318,6 @@ public class Lexer
                 return new Token(TokenType.FUNCTION, "def", _lineNumber);
             }
 
-            // create one for the return keyword
             if (_position + 6 <= _input.Length && _input.Substring(_position, 6) == "return" &&
             (_position + 6 == _input.Length || char.IsWhiteSpace(_input[_position + 6]) || _input[_position + 6] == '('))
             {
@@ -355,6 +356,7 @@ public class Lexer
                 return new Token(TokenType.SEMICOLON, ";", _lineNumber);
             }
 
+            // keep this at the end
             if (char.IsLetter(_currentChar) || _currentChar == '_')
             {
                 return new Token(TokenType.IDENTIFIER, Identifier(), _lineNumber);

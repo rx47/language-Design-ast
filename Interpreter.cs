@@ -1,7 +1,8 @@
 public class Interpreter
 {
     private Parser _parser;
-        private Stack<Dictionary<string, dynamic>> _scopes = new Stack<Dictionary<string, dynamic>>();
+    // stack of scopes
+    private Stack<Dictionary<string, dynamic>> _scopes = new Stack<Dictionary<string, dynamic>>();
     private Dictionary<string, FunctionNode> _functions = new Dictionary<string, FunctionNode>();
 
     public Interpreter(Parser parser)
@@ -26,6 +27,7 @@ public class Interpreter
         _scopes.Pop();
     }
 
+    // look up a variable in the scope stack
     private dynamic LookupVariable(string name)
     {
         foreach (var scope in _scopes)
@@ -38,6 +40,7 @@ public class Interpreter
         throw new Exception($"Variable {name} not defined.");
     }
 
+    // assign a variable in the top scope
     private void AssignVariable(string name, dynamic value)
     {
         _scopes.Peek()[name] = value;
@@ -48,17 +51,15 @@ public class Interpreter
         var value = Visit(node.Expression).ToString();
         Console.WriteLine(value);
     }
-
+    
     private dynamic Visit(InputNode node)
     {
         Console.Write(node.Prompt);
         string take_input = Console.ReadLine() ?? string.Empty;
-        
         if (double.TryParse(take_input, out double number))
         {
             return number;
         }
-        
         return take_input;
     }
 
@@ -75,6 +76,7 @@ public class Interpreter
         return string.Empty;
     }
 
+    // block is a list of statements which we will iterate through and execute
     private dynamic Visit(BlockNode node)
     {
         List<dynamic> results = new List<dynamic>();
@@ -98,7 +100,6 @@ public class Interpreter
     private dynamic Visit(WhileNode node)
     {
         dynamic result = string.Empty;
-
         while (Visit(node.Condition))
         {
             result = Visit(node.Block);
@@ -111,6 +112,7 @@ public class Interpreter
         return Visit(node.Value);
     }
 
+    // ASTNode is the base class for all nodes in the AST
     private dynamic Visit(ASTNode node)
     {
         if (node is Num)
@@ -193,11 +195,13 @@ public class Interpreter
         }
     }
 
+    // function definition node
     private void Visit(FunctionNode node)
     {
         _functions[node.Name] = node;
     }
 
+    // function call node - look up the function definition and execute it
     private dynamic? Visit(FunctionCallNode node)
     {
         if (!_functions.ContainsKey(node.Name))
@@ -214,13 +218,11 @@ public class Interpreter
         {
             AssignVariable(function.Parameters[i], Visit(node.Arguments[i]));
         }
-
         dynamic? result = null;
         if (function.Block != null)
         {
             result = Visit(function.Block);
         }
-        
         ExitScope();
         return result;
     }

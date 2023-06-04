@@ -37,6 +37,7 @@ public class TokenType
     public static readonly TokenType FUNCTION = new TokenType("FUNCTION");
     public static readonly TokenType COMMA = new TokenType("COMMA");
     public static readonly TokenType RETURN = new TokenType("RETURN");
+    
     public string Name { get; set; }
 
     //initialize the token type

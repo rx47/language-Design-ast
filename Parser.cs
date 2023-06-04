@@ -11,6 +11,7 @@ public class Parser
         _currentToken = _tokens[_currentTokenIndex];
     }
 
+    
     private void Eat(TokenType tokenType)
     {
         if (_currentToken.Type == tokenType)
@@ -33,6 +34,7 @@ public class Parser
 
 
     // the lower the following methods are in the file, the higher their precedence
+    // factor is the highest precedence
     private ASTNode Factor()
     {
         Token token = _currentToken;
@@ -75,15 +77,10 @@ public class Parser
             Eat(TokenType.STRING);
             return new StringNode(token);
         }
-        //else if (token.Type == TokenType.IDENTIFIER)
-        //{
-        //    Eat(TokenType.IDENTIFIER);
-        //    return new VarNode(token);
-        //}
         else if (token.Type == TokenType.IDENTIFIER)
         {
             Eat(TokenType.IDENTIFIER);
-            if (_currentToken.Type == TokenType.LPAREN) // it's a function call
+            if (_currentToken.Type == TokenType.LPAREN)
             {
                 return FunctionCallStatement(token.Value, token);
             }
@@ -106,6 +103,7 @@ public class Parser
         }
     }
 
+    // term is the second highest precedence
     private ASTNode Term()
     {
         ASTNode node = Factor();
@@ -127,6 +125,7 @@ public class Parser
         return node;
     }
 
+    // expr is the third highest precedence
     private ASTNode Expr()
     {
         ASTNode node = Term();
@@ -147,6 +146,7 @@ public class Parser
         return node;
     }
 
+    // compexpr is the fourth highest precedence
     private ASTNode CompExpr()
     {
         ASTNode node = Expr();
@@ -188,7 +188,7 @@ public class Parser
         return node;
     }
 
-
+    // logicexpr is the fifth highest precedence
     private ASTNode LogicExpr()
     {
         ASTNode node = CompExpr();
@@ -273,6 +273,7 @@ public class Parser
         return statements;
     }
 
+    // identifier statement is either a function call or a variable assignment
     private ASTNode IdentifierStatement()
     {
         Token token = _currentToken;
@@ -331,18 +332,15 @@ public class Parser
         return new InputNode(token, prompt);
     }
 
-
     private ASTNode IfStatement()
     {
         Eat(TokenType.IF);
         Eat(TokenType.LPAREN);
         var condition = LogicExpr();
         Eat(TokenType.RPAREN);
-
         Eat(TokenType.LBRACE);
         var trueBlock = Statements();
         Eat(TokenType.RBRACE);
-
         ASTNode? falseBlock = null;
         if (_currentToken.Type == TokenType.ELIF)
         {
@@ -352,7 +350,6 @@ public class Parser
         {
             falseBlock = ElseStatement();
         }
-
         return new IfNode(condition, trueBlock, falseBlock, new Token(TokenType.IF, "if", _currentToken.LineNumber));
     }
 
@@ -362,11 +359,9 @@ public class Parser
         Eat(TokenType.LPAREN);
         var condition = LogicExpr();
         Eat(TokenType.RPAREN);
-
         Eat(TokenType.LBRACE);
         var trueBlock = Statements();
         Eat(TokenType.RBRACE);
-
         ASTNode? falseBlock = null;
         if (_currentToken.Type == TokenType.ELIF)
         {
@@ -376,7 +371,6 @@ public class Parser
         {
             falseBlock = ElseStatement();
         }
-
         return new IfNode(condition, trueBlock, falseBlock, new Token(TokenType.IF, "if", _currentToken.LineNumber));
     }
 
@@ -395,14 +389,13 @@ public class Parser
         Eat(TokenType.LPAREN);
         var condition = LogicExpr();
         Eat(TokenType.RPAREN);
-
         Eat(TokenType.LBRACE);
         var block = Statements();
         Eat(TokenType.RBRACE);
-
         return new WhileNode(condition, block, new Token(TokenType.WHILE, "while", _currentToken.LineNumber));
     }
 
+    // function is a keyword followed by an identifier, a list of parameters surrounded by parentheses, and a block
     private ASTNode FunctionStatement()
     {
         Eat(TokenType.FUNCTION);
@@ -426,23 +419,20 @@ public class Parser
         return new FunctionNode(new Token(TokenType.FUNCTION, name, _currentToken.LineNumber), name, parameters, block);
     }
 
+    // function call is an identifier followed by a list of arguments surrounded by parentheses
     private ASTNode FunctionCallStatement(string functionName, Token token)
     {
         Eat(TokenType.LPAREN);
         var arguments = new List<ASTNode>();
-
         while (_currentToken.Type != TokenType.RPAREN)
         {
             arguments.Add(LogicExpr());
-
             if (_currentToken.Type == TokenType.COMMA)
             {
                 Eat(TokenType.COMMA);
             }
         }
-
         Eat(TokenType.RPAREN);
-
         return new FunctionCallNode(token, functionName, arguments);
     }
 
@@ -454,7 +444,7 @@ public class Parser
         return node;
     }
 
-
+    // block is a list of statements surrounded by curly braces
     private BlockNode Statements()
     {
         var statements = new List<ASTNode>();
