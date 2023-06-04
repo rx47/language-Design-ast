@@ -2,8 +2,8 @@
 {
     public static void Main(string[] args)
     {
-        string filePath = "hello2.txt";
-            
+        string filePath = "hello.txt";
+
         if (!File.Exists(filePath))
         {
             Console.WriteLine("The file does not exist.");
@@ -12,18 +12,18 @@
 
         Console.WriteLine("Select option: \n1. Lex file and display results\n2. Parse file");
         var userInput = Console.ReadLine();
-        var code = File.ReadAllText(filePath); 
+        var code = File.ReadAllText(filePath);
 
         switch(userInput)
         {
             case "1":
                 var lexer = new Lexer(code);
-                var allTokens = lexer.GetAllTokens(); 
+                var allTokens = lexer.GetAllTokens();
 
                 Console.WriteLine("Lexed tokens: ");
                 foreach (var token in allTokens)
                 {
-                    Console.WriteLine(token); 
+                    Console.WriteLine(token);
                 }
                 break;
             case "2":

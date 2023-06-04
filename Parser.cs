@@ -75,10 +75,22 @@ public class Parser
             Eat(TokenType.STRING);
             return new StringNode(token);
         }
+        //else if (token.Type == TokenType.IDENTIFIER)
+        //{
+        //    Eat(TokenType.IDENTIFIER);
+        //    return new VarNode(token);
+        //}
         else if (token.Type == TokenType.IDENTIFIER)
         {
             Eat(TokenType.IDENTIFIER);
-            return new VarNode(token);
+            if (_currentToken.Type == TokenType.LPAREN) // it's a function call
+            {
+                return FunctionCallStatement(token.Value, token);
+            }
+            else
+            {
+                return new VarNode(token);
+            }
         }
         else if (token.Type == TokenType.INPUT)
         {
@@ -221,7 +233,7 @@ public class Parser
             {
                 statements.Add(WhileStatement());
             }
-            else if (_currentToken.Type == TokenType.IDENTIFIER) 
+            else if (_currentToken.Type == TokenType.IDENTIFIER)
             {
                 statements.Add(IdentifierStatement());
             }
@@ -229,7 +241,7 @@ public class Parser
             {
                 statements.Add(InputStatement());
             }
-            else if (_currentToken.Type == TokenType.INTEGER || 
+            else if (_currentToken.Type == TokenType.INTEGER ||
                     _currentToken.Type == TokenType.LPAREN ||
                     _currentToken.Type == TokenType.MINUS ||
                     _currentToken.Type == TokenType.NOT ||
@@ -340,7 +352,7 @@ public class Parser
         {
             falseBlock = ElseStatement();
         }
-            
+
         return new IfNode(condition, trueBlock, falseBlock, new Token(TokenType.IF, "if", _currentToken.LineNumber));
     }
 
@@ -397,7 +409,7 @@ public class Parser
         string name = _currentToken.Value;
         Eat(TokenType.IDENTIFIER);
         Eat(TokenType.LPAREN);
-        var parameters = new List<string>(); 
+        var parameters = new List<string>();
         while (_currentToken.Type != TokenType.RPAREN)
         {
             parameters.Add(_currentToken.Value);
@@ -430,7 +442,7 @@ public class Parser
         }
 
         Eat(TokenType.RPAREN);
-        
+
         return new FunctionCallNode(token, functionName, arguments);
     }
 
