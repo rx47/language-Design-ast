@@ -1,13 +1,3 @@
-public class ReturnException : Exception
-{
-    public dynamic Value { get; }
-    
-    public ReturnException(dynamic value)
-    {
-        Value = value;
-    }
-}
-
 public class Interpreter
 {
     private Parser _parser;
@@ -226,13 +216,9 @@ public class Interpreter
         }
 
         dynamic? result = null;
-        try
+        if (function.Block != null)
         {
-            Visit(function.Block);
-        }
-        catch (ReturnException e)
-        {
-            result = e.Value;
+            result = Visit(function.Block);
         }
         
         ExitScope();
