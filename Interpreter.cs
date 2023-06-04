@@ -1,18 +1,46 @@
 public class Interpreter
 {
     private Parser _parser;
-    private Dictionary<string, dynamic> _variables = new Dictionary<string, dynamic>();
+        private Stack<Dictionary<string, dynamic>> _scopes = new Stack<Dictionary<string, dynamic>>();
     private Dictionary<string, FunctionNode> _functions = new Dictionary<string, FunctionNode>();
 
     public Interpreter(Parser parser)
     {
         _parser = parser;
+        _scopes.Push(new Dictionary<string, dynamic>());
     }
 
     public Parser Parser 
     { 
         get { return _parser; } 
         set { _parser = value; } 
+    }
+
+        private void EnterScope()
+    {
+        _scopes.Push(new Dictionary<string, dynamic>());
+    }
+
+    private void ExitScope()
+    {
+        _scopes.Pop();
+    }
+
+    private dynamic LookupVariable(string name)
+    {
+        foreach (var scope in _scopes)
+        {
+            if (scope.TryGetValue(name, out var value))
+            {
+                return value;
+            }
+        }
+        throw new Exception($"Variable {name} not defined.");
+    }
+
+    private void AssignVariable(string name, dynamic value)
+    {
+        _scopes.Peek()[name] = value;
     }
 
     public void Visit(PrintNode node)
@@ -172,21 +200,20 @@ public class Interpreter
         {
             throw new Exception($"Function {node.Name} expects {function.Parameters.Count} arguments");
         }
+        EnterScope();
         for (int i = 0; i < node.Arguments.Count; i++)
         {
-            _variables[function.Parameters[i]] = Visit(node.Arguments[i]);
+            AssignVariable(function.Parameters[i], Visit(node.Arguments[i]));
         }
-        return Visit(function.Block);
+        dynamic result = Visit(function.Block);
+        ExitScope();
+        return result;
     }
 
     public dynamic Visit(VarNode node)
     {
         string varName = node.Token.Value;
-        if (!_variables.ContainsKey(varName))
-        {
-            throw new Exception($"Variable {varName} not defined.");
-        }
-        return _variables[varName];
+        return LookupVariable(varName);
     }
     
     private string Visit(StringNode node)
@@ -264,7 +291,7 @@ public class Interpreter
         {
             var varName = ((VarNode)node.Left).Token.Value;
             var value = Visit(node.Right);
-            _variables[varName] = value;
+            AssignVariable(varName, value);
             return String.Empty;
         }
         else
