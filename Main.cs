@@ -11,9 +11,7 @@
         }
 
         Console.WriteLine("Select option: \n1. Lex file and display results\n2. Parse file");
-        //var userInput = Console.ReadLine();
-        var userInput = "2";
-
+        var userInput = Console.ReadLine();
         var code = File.ReadAllText(filePath); 
 
         switch(userInput)
@@ -33,6 +31,7 @@
                 var interpreter = new Interpreter(parser);
 
                 var result = interpreter.Interpret();
+                // If the result is not null and not an empty string, print it
                 if (result != null && result?.ToString() != "")
                 {
                     Console.WriteLine(result);

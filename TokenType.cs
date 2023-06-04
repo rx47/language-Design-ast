@@ -1,5 +1,5 @@
 public class TokenType
-{
+{   //define token types
     public static readonly TokenType NUMBER = new TokenType("NUMBER");
     public static readonly TokenType PLUS = new TokenType("PLUS");
     public static readonly TokenType MINUS = new TokenType("MINUS");
@@ -39,11 +39,12 @@ public class TokenType
     public static readonly TokenType RETURN = new TokenType("RETURN");
     public string Name { get; set; }
 
+    //initialize the token type
     private TokenType(string name)
     {
         Name = name;
     }
-    
+    //override ToString() to return the token type name
     public override string ToString()
     {
         return Name;

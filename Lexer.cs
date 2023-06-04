@@ -5,6 +5,7 @@ public class Lexer
     private char _currentChar;
     private int _lineNumber;
 
+    //initialize the lexer
     public Lexer(string input)
     {
         _input = input;
