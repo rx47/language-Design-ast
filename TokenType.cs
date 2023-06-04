@@ -27,6 +27,7 @@ public class TokenType
     public static readonly TokenType PRINT = new TokenType("PRINT");
     public static readonly TokenType INPUT = new TokenType("INPUT");
     public static readonly TokenType IF = new TokenType("IF");
+    public static readonly TokenType ELIF = new TokenType("ELIF");
     public static readonly TokenType ELSE = new TokenType("ELSE");
     public static readonly TokenType WHILE = new TokenType("WHILE");
     public static readonly TokenType LBRACE = new TokenType("LBRACE");

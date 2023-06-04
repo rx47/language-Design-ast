@@ -130,6 +130,18 @@ public class IfNode : ASTNode
     }
 }
 
+public class ElseIfNode : ASTNode
+{
+    public ASTNode Condition { get; set; }
+    public ASTNode Block { get; set; }
+
+    public ElseIfNode(ASTNode condition, ASTNode block, Token token) : base(token)
+    {
+        Condition = condition;
+        Block = block;
+    }
+}
+
 public class ElseNode : ASTNode
 {
     public ASTNode Block { get; set; }

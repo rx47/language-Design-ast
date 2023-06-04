@@ -301,11 +301,39 @@ public class Parser
         Eat(TokenType.RBRACE);
 
         ASTNode? falseBlock = null;
-        if (_currentToken.Type == TokenType.ELSE)
+        if (_currentToken.Type == TokenType.ELIF)
+        {
+            falseBlock = ElseIfStatement();
+        }
+        else if (_currentToken.Type == TokenType.ELSE)
         {
             falseBlock = ElseStatement();
         }
             
+        return new IfNode(condition, trueBlock, falseBlock, new Token(TokenType.IF, "if", _currentToken.LineNumber));
+    }
+
+    private ASTNode ElseIfStatement()
+    {
+        Eat(TokenType.ELIF);
+        Eat(TokenType.LPAREN);
+        var condition = LogicExpr();
+        Eat(TokenType.RPAREN);
+
+        Eat(TokenType.LBRACE);
+        var trueBlock = Statements();
+        Eat(TokenType.RBRACE);
+
+        ASTNode? falseBlock = null;
+        if (_currentToken.Type == TokenType.ELIF)
+        {
+            falseBlock = ElseIfStatement();
+        }
+        else if (_currentToken.Type == TokenType.ELSE)
+        {
+            falseBlock = ElseStatement();
+        }
+
         return new IfNode(condition, trueBlock, falseBlock, new Token(TokenType.IF, "if", _currentToken.LineNumber));
     }
 

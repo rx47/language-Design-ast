@@ -284,6 +284,14 @@ public class Lexer
                 return new Token(TokenType.IF, "if", _lineNumber);
             }
 
+            if (_position + 7 <= _input.Length && _input.Substring(_position, 7) == "else if" &&
+            (_position + 7 == _input.Length || char.IsWhiteSpace(_input[_position + 7]) || _input[_position + 7] == '('))
+            {
+                _position += 7;
+                Advance();
+                return new Token(TokenType.ELIF, "else if", _lineNumber);
+            }
+
             if (_position + 4 <= _input.Length && _input.Substring(_position, 4) == "else" &&
             (_position + 4 == _input.Length || char.IsWhiteSpace(_input[_position + 4]) || _input[_position + 4] == '('))
             {

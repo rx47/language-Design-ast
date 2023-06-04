@@ -1,27 +1,43 @@
 o = 5;
 i = "Goku";
 
-if (o != 5) { 
-    i = "hello"
-    print(i + " mf")
-    print("its me mario")
+if (o == 5) { 
+    print("Super Saiyan " + i)
+} else if (o == 10) { 
+    print("one peice")
 } else { 
-    print("luigi")
+    print("its me mario")
 };
 
-print(i);
 
-k = 5;
+l = 0;
+i = true ;
+j = "Goku";
+while ( i ) {
+    if (l == 10) { 
+        print("Super Saiyan " + j)
+        i = false
+    } else if (l == 20) { 
+        print("one peice")
+        i = false
+    } else if (l == 40) { 
+        print("naruto")
+        i = false
+    } else { 
+        print("its me mario")
+    }
+    l = l + 1;
+};
+
+
 l = 1;
-o = 5;
-
-while ( k > l ) {
-    if (o == 5) { 
+i = true ;
+while ( i ) {
+    if ( l == 10) { 
         print("is five")
+        i = false
     } else { 
         print("is not five")
     }
     l = l + 1;
 };
-
-print(k);
