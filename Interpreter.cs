@@ -277,20 +277,7 @@ public class Interpreter
     {
         if (node.Token.Type == TokenType.PLUS)
         {
-            var left = Visit(node.Left);
-            var right = Visit(node.Right);
-            if(left is double && right is double)
-            {
-                return (double)left + (double)right;
-            }
-            else if(left is string && right is string)
-            {
-                return (string)left + (string)right;
-            }
-            else
-            {
-                throw new Exception("Type mismatch in addition operation");
-            }
+            return Visit(node.Left) + Visit(node.Right);
         }
         else if (node.Token.Type == TokenType.MINUS)
         {
