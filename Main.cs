@@ -1,8 +1,11 @@
-﻿public class Program
+﻿using System;
+using System.IO;
+public class Program
 {
     public static void Main(string[] args)
     {
-        string filePath = "test1.txt";
+        string fileName = "test1.txt";
+        string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..", fileName);
 
         if (!File.Exists(filePath))
         {

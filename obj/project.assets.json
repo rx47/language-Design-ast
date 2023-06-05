@@ -8,24 +8,26 @@
     "net7.0": []
   },
   "packageFolders": {
-    "/Users/rx/.nuget/packages/": {}
+    "C:\\Users\\Ray_s\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/rx/Documents/udo/language-Design-ast/language_Design.csproj",
+      "projectUniqueName": "C:\\Users\\Ray_s\\Desktop\\language-Design-ast\\language_Design.csproj",
       "projectName": "language_Design",
-      "projectPath": "/Users/rx/Documents/udo/language-Design-ast/language_Design.csproj",
-      "packagesPath": "/Users/rx/.nuget/packages/",
-      "outputPath": "/Users/rx/Documents/udo/language-Design-ast/obj/",
+      "projectPath": "C:\\Users\\Ray_s\\Desktop\\language-Design-ast\\language_Design.csproj",
+      "packagesPath": "C:\\Users\\Ray_s\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Ray_s\\Desktop\\language-Design-ast\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/rx/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\Ray_s\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -59,7 +61,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/opt/homebrew/Cellar/dotnet/7.0.100/libexec/sdk/7.0.100/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   }
