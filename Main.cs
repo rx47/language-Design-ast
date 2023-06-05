@@ -2,7 +2,7 @@
 {
     public static void Main(string[] args)
     {
-        string filePath = "hello2.txt";
+        string filePath = "test5.txt";
 
         if (!File.Exists(filePath))
         {
@@ -13,6 +13,7 @@
         Console.WriteLine("Select option: \n1. Lex file and display results\n2. Parse file");
         Console.Write("Enter option: ");
         var userInput = Console.ReadLine();
+        Console.Write("\n");
         var code = File.ReadAllText(filePath);
 
         switch(userInput)

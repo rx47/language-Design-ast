@@ -1,0 +1,19 @@
+o = 5;
+i = "Goku";
+
+if (o == 5) 
+{ 
+    print("Super Saiyan " + i);
+} 
+else if (o == 10) 
+{ 
+    print("Lufi");
+} 
+else if (l == 20) 
+{ 
+    print("naruto");
+} 
+else 
+{ 
+    print("its me mario");
+};

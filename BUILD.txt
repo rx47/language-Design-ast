@@ -1,0 +1,10 @@
+//// Build the Project ////
+
+1) Open this project in Visual Studio Code
+2) Click on the Terminal tab in VS code and click on new Terminal
+3) Once it has loaded run the command 
+
+commad: dotnet build
+
+4) It will build the project into an executable and When it's finished
+    it will show the file path where the executable is located?

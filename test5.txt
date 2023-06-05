@@ -1,0 +1,21 @@
+x = "X is global variable";
+
+def add (one, two) {
+    x = one + two;
+    return x;
+};
+
+print(x);
+
+y = add(5, 2);
+print(y);
+
+
+
+
+
+def me () {
+    return "Hello";
+};
+
+print(me());

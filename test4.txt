@@ -1,0 +1,14 @@
+
+i = 0 ;
+is_running = true ;
+
+while ( is_running ) {
+
+    print(i);
+
+    if ( i == 1000000 ) {
+        is_running = false;
+    }
+
+    i = i + 1;
+};
