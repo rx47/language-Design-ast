@@ -1,12 +1,28 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.InteropServices;
+
 public class Program
 {
     public static void Main(string[] args)
     {
         string fileName = "test1.txt";
-        string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..", fileName);
+        string filePath = "";
 
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..", fileName);
+        }
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        {
+            filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../..", fileName);
+        }
+        else
+        {
+            Console.WriteLine("Unsupported operating system.");
+            return;
+        }
+        
         if (!File.Exists(filePath))
         {
             Console.WriteLine("The file does not exist.");
