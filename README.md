@@ -14,7 +14,7 @@ dotnet build
 
 4. 🎉 The project will be built into an executable. Once the build process is finished, the file path to the executable will be displayed.
 
-## Open and Run the Project
+##  🏃 Open and Run the Project
 
 To open and run the project, follow these steps:
 
