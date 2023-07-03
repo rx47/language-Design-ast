@@ -1,6 +1,10 @@
 # Language Design AST 🚀
 
+<br>
+
 ## 🛠️ Build the Project
+
+<br>
 
 To build the project, follow these steps:
 
@@ -14,7 +18,11 @@ dotnet build
 
 4. 🎉 The project will be built into an executable. Once the build process is finished, the file path to the executable will be displayed.
 
+<br>
+
 ##  🏃 Open and Run the Project
+
+<br>
 
 To open and run the project, follow these steps:
 
@@ -38,7 +46,11 @@ Enter your choice:
 - If you choose option 1, the tokenizer will create tokens from the provided code, giving you a visual representation of the results. 💡🎨
 - If you choose option 2, will get into parsing and dive into the abstract syntax tree (AST) of the code! ✨🌳
 
+<br>
+
 ## 📝 Changing Test Files
+
+<br>
 
 To change the test file used in the program, follow these steps:
 
